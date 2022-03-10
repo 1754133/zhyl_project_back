@@ -1,4 +1,4 @@
-package com.hust.wit120back.service.controller;
+package com.hust.wit120back.controller;
 
 import com.hust.wit120back.service.SendSms;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ public class HelloController {
 
     @RequestMapping("/message")
     public void sendMessage() throws Exception {
-        ss.send("17863991733", "7878");
+        ss.send("18972093939", "8888");
         System.out.println("send() executed!");
     }
 
