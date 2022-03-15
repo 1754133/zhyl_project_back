@@ -11,10 +11,21 @@ import java.util.List;
 @Mapper
 public interface DepartmentMapper {
 
+    @Select("select department_id from department where department_id = #{departmentId}")
+    @Result(column = "department_id", property = "departmentId")
+    Integer selectDepartmentById(Integer departmentId);
+
     @Select("select department_id, department_name from department")
     @Results({
             @Result(column = "department_id", property = "departmentId"),
             @Result(column = "department_name", property = "departmentName"),
     })
     List<DepartmentDTO> selectDepartments();
+
+    @Select("select department_name, department_desc from department where department_id = #{departmentId}")
+    @Results({
+            @Result(column = "department_name", property = "departmentName"),
+            @Result(column = "department_desc", property = "departmentDesc")
+    })
+    DepartmentDTO selectDepartmentsDesc(Integer departmentId);
 }

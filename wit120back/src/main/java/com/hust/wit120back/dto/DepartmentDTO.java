@@ -8,4 +8,5 @@ import lombok.Data;
 public class DepartmentDTO {
     Integer departmentId;
     String departmentName;
+    String departmentDesc;
 }

@@ -16,6 +16,7 @@ public interface Constants {
     String CODE_400 = "400"; //参数错误
     String CODE_401 = "401"; //权限不足
     String CODE_402 = "402"; //用户未登录
+    String CODE_403 = "403"; //该科室不存在
     String CODE_404 = "404"; //网页不存在
     String CODE_500 = "500"; //系统错误
     String CODE_501 = "501"; //该时段挂号名额已满或该医生并未坐诊
