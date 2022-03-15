@@ -7,7 +7,7 @@ import com.aliyun.dysmsapi20170525.models.*;
 import com.aliyun.teaopenapi.*;
 import com.aliyun.teaopenapi.models.*;
 
-public class SmsEntity {
+public class Sms {
 
     /**
      * 使用AK&SK初始化账号Client

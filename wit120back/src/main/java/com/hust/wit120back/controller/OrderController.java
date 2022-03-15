@@ -17,8 +17,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private JwtInterceptor jwtInterceptor;
 
     @GetMapping("/test")
     public void test(){
@@ -30,7 +28,6 @@ public class OrderController {
     public Result appointment(@RequestBody OrderDTO orderDTO) throws Exception {
         String username = orderDTO.getUsername();
         String doctorName = orderDTO.getDoctorName();
-        //String token = orderDTO.getToken();
         int orderDay = orderDTO.getOrderDay();
         int orderTimeSlice = orderDTO.getOrderTimeSlice();
         int cost = orderDTO.getCost();
@@ -45,13 +42,6 @@ public class OrderController {
         if((orderDay < 1 || orderDay > 7) || (orderTimeSlice < 1 || orderTimeSlice > 6) || cost <= 0){
             return Result.error(Constants.CODE_400, "参数错误");
         }
-        /*
-        //验证用户是否已经登录
-        if(!jwtInterceptor.preHandleVerifyByToken(token)){
-            //用户未登录
-            return Result.error(Constants.CODE_402, "用户未登录");
-        }
-        */
         //查询该时段该用户是否已经预约
         if(orderService.hasMakeAppointment(orderDTO.getUsername(), orderDTO.getDoctorName(), orderDTO.getOrderDay(), orderDTO.getOrderTimeSlice())){
             return Result.error(Constants.CODE_502, "该用户已预约");

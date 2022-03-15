@@ -3,7 +3,7 @@ package com.hust.wit120back.service.impl;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.hust.wit120back.common.Constants;
-import com.hust.wit120back.entity.SmsEntity;
+import com.hust.wit120back.entity.Sms;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.UserMapper;
 import com.hust.wit120back.mapper.VerificationCodeMapper;
@@ -29,7 +29,7 @@ public class SendSmsServiceImpl implements SendSmsService {
         //随机生成验证码
         String code = String.valueOf(new Random().nextInt(7999) + 1000);
         verificationCodeMapper.addCode(phoneNum, code);
-        com.aliyun.dysmsapi20170525.Client client = SmsEntity.createClient("LTAI5tC3ui55bc8NdiVzVM6s", "tcAiRuIwXiFFoIkGCaiuBYFKxtilUu");
+        com.aliyun.dysmsapi20170525.Client client = Sms.createClient("LTAI5tC3ui55bc8NdiVzVM6s", "tcAiRuIwXiFFoIkGCaiuBYFKxtilUu");
         SendSmsRequest sendSmsRequest = new SendSmsRequest()
                 .setSignName("阿里云短信测试")
                 .setTemplateCode("SMS_154950909")

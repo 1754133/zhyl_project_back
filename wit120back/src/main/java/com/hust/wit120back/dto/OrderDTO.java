@@ -6,7 +6,6 @@ import lombok.Data;
 public class OrderDTO {
     String username;
     String doctorName;
-    //String token;
     int orderDay;
     int orderTimeSlice;
     int cost;
