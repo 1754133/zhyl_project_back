@@ -15,7 +15,7 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
-
+    
     @PostMapping
     public Result addUser(@RequestBody UserDTO userDTO){
         String username = userDTO.getUsername();
@@ -35,4 +35,5 @@ public class UserController {
         }
         return Result.success(userService.login(userDTO));
     }
+
 }
