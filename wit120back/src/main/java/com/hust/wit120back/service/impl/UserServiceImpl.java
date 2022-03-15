@@ -2,10 +2,13 @@ package com.hust.wit120back.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.hust.wit120back.common.Constants;
+import com.hust.wit120back.dto.PasswordDTO;
 import com.hust.wit120back.dto.UserDTO;
+import com.hust.wit120back.entity.PatientInfo;
 import com.hust.wit120back.entity.User;
 import com.hust.wit120back.entity.VerificationCode;
 import com.hust.wit120back.exception.ServiceException;
+import com.hust.wit120back.mapper.PatientInfoMapper;
 import com.hust.wit120back.mapper.UserMapper;
 import com.hust.wit120back.mapper.VerificationCodeMapper;
 import com.hust.wit120back.service.UserService;
@@ -21,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private VerificationCodeMapper verificationCodeMapper;
+
+    @Autowired
+    private PatientInfoMapper patientInfoMapper;
 
     public UserDTO addUser(UserDTO userDTO){
         if (userMapper.selectUserByUsername(userDTO.getUsername()) != null){
@@ -40,9 +46,11 @@ public class UserServiceImpl implements UserService {
         user.setPhone(userDTO.getPhone());
         user.setPermission(1);
         userMapper.addUser(user);
+        user = userMapper.selectUserByUsername(userDTO.getUsername());
+        //在病人信息表里自动添加一条数据
+        patientInfoMapper.addPatientInfo(user.getUserId());
         //设置返回值
         //注册之后自动登录
-        user = userMapper.selectUserByUsername(userDTO.getUsername());
         String token = TokenUtils.genToken(user.getUserId().toString(), user.getPassword());
         userDTO.setCode("");
         userDTO.setToken(token);
@@ -64,5 +72,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(Integer userId) {
         return userMapper.selectUserByUserId(userId);
+    }
+
+    @Override
+    public int updatePassword(PasswordDTO passwordDTO) {
+
+        User user = userMapper.selectUserByUsernameAndPassword(passwordDTO.getUsername(), passwordDTO.getOldPassword());
+        if (user != null){
+            VerificationCode verificationCode = verificationCodeMapper.getCodeByPhone(user.getPhone());
+            if (!verificationCode.getCode().equals(passwordDTO.getCode())){
+                throw new ServiceException(Constants.CODE_700, "验证码错误");
+            }
+            return userMapper.updatePassword(passwordDTO.getNewPassword(), passwordDTO.getUsername());
+        }else {
+            throw new ServiceException(Constants.CODE_700, "密码错误");
+        }
     }
 }

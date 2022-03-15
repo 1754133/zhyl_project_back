@@ -21,14 +21,14 @@ public class SendSmsServiceImpl implements SendSmsService {
     @Autowired
     private VerificationCodeMapper verificationCodeMapper;
 
-    @Override
-    public String send(String phoneNum) throws Exception{
-        if (userMapper.selectUserByPhone(phoneNum) != null){
-            throw new ServiceException(Constants.CODE_700, "手机号已被注册");
-        }
+    private String send(String phoneNum) throws Exception{
         //随机生成验证码
         String code = String.valueOf(new Random().nextInt(7999) + 1000);
-        verificationCodeMapper.addCode(phoneNum, code);
+        if (verificationCodeMapper.getCodeByPhone(phoneNum) == null){
+            verificationCodeMapper.addCode(phoneNum, code);
+        }else {
+            verificationCodeMapper.updateCode(phoneNum, code);
+        }
         com.aliyun.dysmsapi20170525.Client client = Sms.createClient("LTAI5tC3ui55bc8NdiVzVM6s", "tcAiRuIwXiFFoIkGCaiuBYFKxtilUu");
         SendSmsRequest sendSmsRequest = new SendSmsRequest()
                 .setSignName("阿里云短信测试")
@@ -44,5 +44,21 @@ public class SendSmsServiceImpl implements SendSmsService {
         }else{
             return code;
         }
+    }
+
+    @Override
+    public String sendRegisterMessage(String phone) throws Exception {
+        if (userMapper.selectUserByPhone(phone) != null){
+            throw new ServiceException(Constants.CODE_700, "手机号已被注册");
+        }
+        return send(phone);
+    }
+
+    @Override
+    public String sendPasswordMessage(String phone) throws Exception {
+        if (userMapper.selectUserByPhone(phone) == null){
+            throw new ServiceException(Constants.CODE_400, "用户不存在");
+        }
+        return send(phone);
     }
 }

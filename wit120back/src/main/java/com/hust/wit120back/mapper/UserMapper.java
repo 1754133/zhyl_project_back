@@ -1,10 +1,7 @@
 package com.hust.wit120back.mapper;
 
 import com.hust.wit120back.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -26,4 +23,7 @@ public interface UserMapper {
     @Select("select * from user where username=#{username}")
     @Result(column = "user_id", property = "userId")
     User selectUserByUsername(String username);
+
+    @Update("update user set password=#{password} where username=#{username}")
+    int updatePassword(String password, String username);
 }

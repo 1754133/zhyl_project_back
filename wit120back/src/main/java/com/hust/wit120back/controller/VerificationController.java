@@ -19,11 +19,19 @@ public class VerificationController {
     private SendSmsService sendSmsService;
 
     @PostMapping("/register")
-    public Result sendMessage(@RequestParam String phone) throws Exception {
+    public Result sendRegisterMessage(@RequestParam String phone) throws Exception {
         if (StrUtil.isBlank(phone)){
             throw new ServiceException(Constants.CODE_400, "手机号为空");
         }
-        return Result.success(sendSmsService.send(phone));
+        return Result.success(sendSmsService.sendRegisterMessage(phone));
+    }
+
+    @PostMapping("/password")
+    public Result sendPasswordMessage(@RequestParam String phone) throws Exception {
+        if (StrUtil.isBlank(phone)){
+            throw new ServiceException(Constants.CODE_400, "手机号为空");
+        }
+        return Result.success(sendSmsService.sendPasswordMessage(phone));
     }
 
 }
