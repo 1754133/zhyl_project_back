@@ -1,6 +1,7 @@
 package com.hust.wit120back.mapper;
 
 import com.hust.wit120back.dto.DepartmentDTO;
+import com.hust.wit120back.entity.Department;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -28,4 +29,14 @@ public interface DepartmentMapper {
             @Result(column = "department_desc", property = "departmentDesc")
     })
     DepartmentDTO selectDepartmentsDesc(Integer departmentId);
+
+    @Select("select department_name from department where department_id=#{departmentId}")
+    String selectDepartmentNameByDepartmentId(Integer departmentId);
+
+    @Select("select department_id from department where department_name=#{departmentName}")
+    Integer selectDepartmentIdByDepartmentName(String departmentName);
+
+    @Select("select department_name from department")
+    List<String> selectAllDepartmentName();
+
 }

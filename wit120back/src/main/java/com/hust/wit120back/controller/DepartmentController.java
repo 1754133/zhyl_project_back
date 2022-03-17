@@ -36,4 +36,9 @@ public class DepartmentController {
         System.out.println("departmentName: " + department.getDepartmentName() + " departmentDesc: " + department.getDepartmentDesc());
         return Result.success(department);
     }
+
+    @GetMapping("/name")
+    public Result getDepartmentName(){
+        return Result.success(departmentService.getDepartmentName());
+    }
 }

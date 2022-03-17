@@ -15,21 +15,26 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentMapper departmentMapper;
 
     @Override
-    public Integer getDepartmentId(Integer departmentId){
+    public Integer getDepartmentId(Integer departmentId) {
         Integer id = departmentMapper.selectDepartmentById(departmentId);
         return id;
     }
 
     @Override
-    public List<DepartmentDTO> getDepartments(){
+    public List<DepartmentDTO> getDepartments() {
         List<DepartmentDTO> departments = departmentMapper.selectDepartments();
         return departments;
     }
 
     @Override
-    public DepartmentDTO getDepartmentsDesc(Integer departmentId){
+    public DepartmentDTO getDepartmentsDesc(Integer departmentId) {
         DepartmentDTO departments = departmentMapper.selectDepartmentsDesc(departmentId);
         return departments;
+    }
+
+    @Override
+    public List<String> getDepartmentName() {
+        return departmentMapper.selectAllDepartmentName();
     }
 
 }

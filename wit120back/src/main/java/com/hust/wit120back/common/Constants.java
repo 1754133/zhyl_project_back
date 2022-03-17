@@ -22,4 +22,5 @@ public interface Constants {
     String CODE_501 = "501"; //该时段挂号名额已满或该医生并未坐诊
     String CODE_502 = "502"; //该用户已预约
     String CODE_700 = "700"; //其他业务异常
+    String CODE_600 = "600"; //查询到的结果数量为0
 }
