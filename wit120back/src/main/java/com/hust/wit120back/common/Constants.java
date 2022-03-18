@@ -23,4 +23,5 @@ public interface Constants {
     String CODE_502 = "502"; //该用户已预约
     String CODE_503 = "503"; //无坐诊信息
     String CODE_700 = "700"; //其他业务异常
+    String CODE_600 = "600"; //查询到的结果数量为0
 }
