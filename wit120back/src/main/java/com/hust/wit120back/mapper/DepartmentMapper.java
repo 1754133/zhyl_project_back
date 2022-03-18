@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface DepartmentMapper {
@@ -43,5 +44,14 @@ public interface DepartmentMapper {
 
     @Select("select doc_name from doc_info where doc_id = #{doctorId}")
     String selectDocNameById(Integer doctorId);
+
+    @Select("select department_name from department where department_id=#{departmentId}")
+    String selectDepartmentNameByDepartmentId(Integer departmentId);
+
+    @Select("select department_id from department where department_name=#{departmentName}")
+    Integer selectDepartmentIdByDepartmentName(String departmentName);
+
+    @Select("select department_name from department")
+    List<String> selectAllDepartmentName();
 
 }

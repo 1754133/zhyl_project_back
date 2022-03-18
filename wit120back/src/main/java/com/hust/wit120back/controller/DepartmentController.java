@@ -52,4 +52,8 @@ public class DepartmentController {
         return Result.success(shiftInfos);
     }
 
+    @GetMapping("/name")
+    public Result getDepartmentName(){
+        return Result.success(departmentService.getDepartmentName());
+    }
 }
