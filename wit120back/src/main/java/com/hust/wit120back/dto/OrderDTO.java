@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class OrderDTO {
-    String username;
-    String doctorName;
-    int orderDay;
-    int orderTimeSlice;
-    int cost;
+    private String username;
+    private String doctorName;
+    private int orderDay;
+    private int orderTimeSlice;
+    private int cost;
 }

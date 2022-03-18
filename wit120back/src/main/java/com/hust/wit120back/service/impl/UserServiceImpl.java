@@ -76,7 +76,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updatePassword(PasswordDTO passwordDTO) {
-
         User user = userMapper.selectUserByUsernameAndPassword(passwordDTO.getUsername(), passwordDTO.getOldPassword());
         if (user != null){
             VerificationCode verificationCode = verificationCodeMapper.getCodeByPhone(user.getPhone());

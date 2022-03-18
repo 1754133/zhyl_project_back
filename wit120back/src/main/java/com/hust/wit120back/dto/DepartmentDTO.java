@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class DepartmentDTO {
-    Integer departmentId;
-    String departmentName;
-    String departmentDesc;
+    private Integer departmentId;
+    private String departmentName;
+    private String departmentDesc;
 }
