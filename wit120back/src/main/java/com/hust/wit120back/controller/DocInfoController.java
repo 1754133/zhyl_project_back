@@ -3,7 +3,6 @@ package com.hust.wit120back.controller;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.DocInfoDTO;
-import com.hust.wit120back.entity.DocInfo;
 import com.hust.wit120back.service.DocInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -41,4 +41,16 @@ public interface DocInfoMapper {
 
     @Delete("delete from doc_info where doc_info_id=#{docInfoId}")
     int deleteDocInfoByDocInfoId(Integer docInfoId);
+
+    @Insert("insert into doc_info(doc_id) values(#{docId})")
+    void addDocInfo(Integer docId);
+
+    @Delete("delete from doc_info where doc_id=#{docId}")
+    int deleteDocInfoByDocId(Integer docId);
+
+    @Update("update doc_info set department_id=#{departmentId} where doc_info_id=#{docInfoId}")
+    int updateDepartmentId(Integer departmentId, Integer docInfoId);
+
+    @Select("select doc_info_id from doc_info where department_id=#{departmentId}")
+    List<Integer> selectDocInfoIdByDepartmentId(Integer departmentId);
 }

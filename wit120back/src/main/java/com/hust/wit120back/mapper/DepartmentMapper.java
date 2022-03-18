@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import com.hust.wit120back.entity.Department;
+import org.apache.ibatis.annotations.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -54,4 +56,23 @@ public interface DepartmentMapper {
     @Select("select department_name from department")
     List<String> selectAllDepartmentName();
 
+    @Select("select * from department limit #{pageNum},#{pageSize}")
+    @Results({
+            @Result(column = "department_id", property = "departmentId"),
+            @Result(column = "department_name", property = "departmentName"),
+            @Result(column = "department_desc", property = "departmentDesc")
+    })
+    List<Department> selectDepartmentByPage(int pageNum, int pageSize);
+
+    @Select("select count(*) from department")
+    int selectTotal();
+
+    @Insert("insert into department(department_name, department_desc) values(#{departmentName}, #{departmentDesc})")
+    void addDepartment(Department department);
+
+    @Update("update department set department_name=#{departmentName}, department_desc=#{departmentDesc} where department_id=#{departmentId}")
+    int updateDepartment(Department department);
+
+    @Delete("delete from department where department_id=#{departmentId}")
+    int deleteDepartment(Integer departmentId);
 }

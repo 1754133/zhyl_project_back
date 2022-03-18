@@ -1,10 +1,12 @@
 package com.hust.wit120back.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.DepartmentDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.exception.ServiceException;
+import com.hust.wit120back.entity.Department;
 import com.hust.wit120back.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,11 @@ public class DepartmentController {
             //System.out.println("departmentId: " + dep.getDepartmentId() + " departmentName: " + dep.getDepartmentName());
         }
         return Result.success(departments);
+    }
+
+    @GetMapping("/page/{pageNum}/{pageSize}")
+    public Result getDepartmentByPage(@PathVariable int pageNum, @PathVariable int pageSize){
+        return Result.success(departmentService.getDepartmentByPage(pageNum, pageSize));
     }
 
     @GetMapping("/description")
@@ -55,5 +62,33 @@ public class DepartmentController {
     @GetMapping("/name")
     public Result getDepartmentName(){
         return Result.success(departmentService.getDepartmentName());
+    }
+
+    @PostMapping
+    public Result addDepartment(@RequestBody Department department){
+        String departmentName = department.getDepartmentName();
+        String departmentDesc = department.getDepartmentDesc();
+        if (StrUtil.isBlank(departmentName) || StrUtil.isBlank(departmentDesc)){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.addDepartment(department));
+    }
+
+    @PutMapping
+    public Result updateDepartment(@RequestBody Department department){
+        String departmentName = department.getDepartmentName();
+        String departmentDesc = department.getDepartmentDesc();
+        if (StrUtil.isBlank(departmentName) || StrUtil.isBlank(departmentDesc)){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.updateDepartment(department));
+    }
+
+    @DeleteMapping("/{departmentId}")
+    public Result deleteDepartment(@PathVariable Integer departmentId){
+        if (departmentId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.deleteDepartment(departmentId));
     }
 }

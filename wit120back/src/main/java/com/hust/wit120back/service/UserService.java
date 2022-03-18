@@ -4,6 +4,7 @@ import com.hust.wit120back.dto.PasswordDTO;
 import com.hust.wit120back.dto.UserDTO;
 import com.hust.wit120back.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -12,4 +13,10 @@ public interface UserService {
     User getUserByUserId(Integer userId);
 
     int updatePassword(PasswordDTO passwordDTO);
+
+    Map<String, Object> getDocAccount(int pageNum, int pageSize);
+
+    boolean addDoc(User user);
+
+    boolean deleteDoc(Integer userId);
 }

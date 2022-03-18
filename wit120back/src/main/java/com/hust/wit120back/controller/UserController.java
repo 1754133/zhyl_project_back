@@ -5,6 +5,7 @@ import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.PasswordDTO;
 import com.hust.wit120back.dto.UserDTO;
+import com.hust.wit120back.entity.User;
 import com.hust.wit120back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,30 @@ public class UserController {
             return Result.error(Constants.CODE_400, "参数错误");
         }
         return Result.success(userService.addUser(userDTO));
+    }
+
+    /**
+     * 新增医生帐号
+     * @param user
+     * @return
+     */
+    @PostMapping("/doc")
+    public Result addDoc(@RequestBody User user){
+        String username = user.getUsername();
+        String password = user.getPassword();
+        String phone = user.getPhone();
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(phone)){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(userService.addDoc(user));
+    }
+
+    @DeleteMapping("/doc/{userId}")
+    public Result deleteDoc(@PathVariable Integer userId){
+        if (userId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(userService.deleteDoc(userId));
     }
 
     @PostMapping("/login")
@@ -45,5 +70,15 @@ public class UserController {
             return Result.error(Constants.CODE_400, "参数错误");
         }
         return Result.success(userService.updatePassword(passwordDTO));
+    }
+
+    /**
+     * 分页查询所有的医生帐号
+     * @param
+     * @return Result
+     */
+    @GetMapping("/doc/{pageNum}/{pageSize}")
+    public Result getDocAccount(@PathVariable int pageNum, @PathVariable int pageSize){
+        return Result.success(userService.getDocAccount(pageNum, pageSize));
     }
 }

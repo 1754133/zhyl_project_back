@@ -4,10 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.dto.PasswordDTO;
 import com.hust.wit120back.dto.UserDTO;
-import com.hust.wit120back.entity.PatientInfo;
 import com.hust.wit120back.entity.User;
 import com.hust.wit120back.entity.VerificationCode;
 import com.hust.wit120back.exception.ServiceException;
+import com.hust.wit120back.mapper.DocInfoMapper;
 import com.hust.wit120back.mapper.PatientInfoMapper;
 import com.hust.wit120back.mapper.UserMapper;
 import com.hust.wit120back.mapper.VerificationCodeMapper;
@@ -15,6 +15,10 @@ import com.hust.wit120back.service.UserService;
 import com.hust.wit120back.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -27,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PatientInfoMapper patientInfoMapper;
+
+    @Autowired
+    private DocInfoMapper docInfoMapper;
 
     public UserDTO addUser(UserDTO userDTO){
         if (userMapper.selectUserByUsername(userDTO.getUsername()) != null){
@@ -87,4 +94,56 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(Constants.CODE_700, "密码错误");
         }
     }
+
+    @Override
+    public Map<String, Object> getDocAccount(int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int count = userMapper.selectTotalByPermission(2);
+        if (count == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何医生帐号");
+        }
+        List<User> userList = userMapper.selectUserByPermission(2, pageNum, pageSize);
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", userList);
+        res.put("total", count);
+        return res;
+    }
+
+    @Override
+    public boolean addDoc(User user) {
+        String username = user.getUsername();
+        String phone = user.getPhone();
+        if (userMapper.selectUserByUsername(username) != null){
+            throw new ServiceException(Constants.CODE_700, "用户名已被注册");
+        }
+        if (userMapper.selectUserByPhone(phone) != null){
+            throw new ServiceException(Constants.CODE_700, "手机号已被注册");
+        }
+        //赋予医生权限
+        user.setPermission(2);
+        //存入数据库
+        userMapper.addUser(user);
+        user = userMapper.selectUserByUsername(username);
+        //在医生信息表中添加一条数据
+        docInfoMapper.addDocInfo(user.getUserId());
+        return true;
+    }
+
+    @Override
+    public boolean deleteDoc(Integer userId) {
+        User user = userMapper.selectUserByUserIdAndPermission(userId, 2);
+        if (user == null){
+            throw new ServiceException(Constants.CODE_600, "要删除的医生帐号不存在");
+        }
+        //删除医生信息
+        docInfoMapper.deleteDocInfoByDocId(userId);
+        //删除医生账号
+        userMapper.deleteUserByUserId(userId);
+        return true;
+    }
+
+
 }
