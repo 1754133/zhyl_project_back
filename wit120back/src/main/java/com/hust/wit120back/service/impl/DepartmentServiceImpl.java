@@ -55,9 +55,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         ArrayList<Integer> ids = departmentMapper.selectDoctorIdByDepartmentId(departmentId);
         //根据id去查询排班信息
         for (Integer id : ids) {
-            System.out.println("id: " + id);
+            //System.out.println("id: " + id);
             ArrayList<ConciseShiftInfoDTO> infos = departmentMapper.selectConciseShiftInfoByDocId(id);
-            System.out.println(infos);
+            //System.out.println(infos);
             for (ConciseShiftInfoDTO info : infos) {
                 info.setDoctorName(departmentMapper.selectDocNameById(id));
                 shiftInfos.add(info);
