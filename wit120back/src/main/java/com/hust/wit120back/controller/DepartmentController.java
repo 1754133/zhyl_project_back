@@ -3,6 +3,7 @@ package com.hust.wit120back.controller;
 import cn.hutool.core.util.StrUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
+import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.DepartmentDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.exception.ServiceException;
@@ -50,7 +51,7 @@ public class DepartmentController {
 
     @GetMapping("/shiftInfo")
     public Result getShiftInfo(@RequestParam Integer departmentId){
-        ArrayList<ShiftInfoDTO> shiftInfos;
+        ArrayList<ConciseShiftInfoDTO> shiftInfos;
         try{
             shiftInfos = departmentService.getDepartShiftInfo(departmentId);
         }catch (ServiceException e){

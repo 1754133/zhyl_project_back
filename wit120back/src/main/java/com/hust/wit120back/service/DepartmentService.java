@@ -1,5 +1,6 @@
 package com.hust.wit120back.service;
 
+import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.DepartmentDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.entity.Department;
@@ -12,7 +13,7 @@ public interface DepartmentService {
     Integer getDepartmentId(Integer departmentId);
     ArrayList<DepartmentDTO> getDepartments();
     DepartmentDTO getDepartmentsDesc(Integer departmentId);
-    ArrayList<ShiftInfoDTO> getDepartShiftInfo(Integer departmentId);
+    ArrayList<ConciseShiftInfoDTO> getDepartShiftInfo(Integer departmentId);
     List<String> getDepartmentName();
 
     Map<String, Object> getDepartmentByPage(int pageNum, int pageSize);

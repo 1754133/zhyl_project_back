@@ -1,6 +1,7 @@
 package com.hust.wit120back.service.impl;
 
 import com.hust.wit120back.common.Constants;
+import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.DepartmentDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 
@@ -48,16 +49,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public ArrayList<ShiftInfoDTO> getDepartShiftInfo(Integer departmentId) {
-        ArrayList<ShiftInfoDTO> shiftInfos = new ArrayList<ShiftInfoDTO>();
+    public ArrayList<ConciseShiftInfoDTO> getDepartShiftInfo(Integer departmentId) {
+        ArrayList<ConciseShiftInfoDTO> shiftInfos = new ArrayList<ConciseShiftInfoDTO>();
         //获取所有医生的id
         ArrayList<Integer> ids = departmentMapper.selectDoctorIdByDepartmentId(departmentId);
         //根据id去查询排班信息
         for (Integer id : ids) {
             System.out.println("id: " + id);
-            ArrayList<ShiftInfoDTO> infos = departmentMapper.selectShiftInfoByDocId(id);
+            ArrayList<ConciseShiftInfoDTO> infos = departmentMapper.selectConciseShiftInfoByDocId(id);
             System.out.println(infos);
-            for (ShiftInfoDTO info : infos) {
+            for (ConciseShiftInfoDTO info : infos) {
                 info.setDoctorName(departmentMapper.selectDocNameById(id));
                 shiftInfos.add(info);
             }

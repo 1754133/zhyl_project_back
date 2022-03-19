@@ -1,5 +1,6 @@
 package com.hust.wit120back.mapper;
 
+import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.DepartmentDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,13 +37,9 @@ public interface DepartmentMapper {
     @Select("select doc_id from doc_info where department_id = #{departmentId}")
     ArrayList<Integer> selectDoctorIdByDepartmentId(Integer departmentId);
 
-    @Select("select doctor_id, day, time_slice from doctor_shift_info where doctor_id = #{doctorId}")
-    @Results({
-            @Result(column = "doctor_id", property = "doctorId"),
-            @Result(column = "day", property = "orderDay"),
-            @Result(column = "time_slice", property = "orderTimeSlice")
-    })
-    ArrayList<ShiftInfoDTO> selectShiftInfoByDocId(Integer doctorId);
+    @Select("select doctor_id, day, noon from doctor_concise_shift_info where doctor_id = #{doctorId}")
+    @Result(column = "doctor_id", property = "doctorId")
+    ArrayList<ConciseShiftInfoDTO> selectConciseShiftInfoByDocId(Integer doctorId);
 
     @Select("select doc_name from doc_info where doc_id = #{doctorId}")
     String selectDocNameById(Integer doctorId);
