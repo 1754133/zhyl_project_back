@@ -9,7 +9,9 @@ import com.hust.wit120back.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.CredentialException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service("DoctorService")
 public class DoctorServiceImpl implements DoctorService {
@@ -29,6 +31,20 @@ public class DoctorServiceImpl implements DoctorService {
         ArrayList<ShiftInfoDTO> shiftInfos = doctorMapper.selectDocShiftInfoById(doctorId);
         if(shiftInfos.size() == 0)
             throw new ServiceException(Constants.CODE_503, "无坐诊信息");
+        return shiftInfos;
+    }
+
+    @Override
+    public List<ShiftInfoDTO> getDocShiftInfoBySlice(Integer doctorId, int orderDay, int noon) {
+        List<ShiftInfoDTO> shiftInfos;
+        if (noon == 1){
+            shiftInfos = doctorMapper.selectDocShiftInfoByIdAndDayAndMor(doctorId, orderDay);
+        }else{
+            shiftInfos = doctorMapper.selectDocShiftInfoByIdAndDayAndAft(doctorId, orderDay);
+        }
+        if (shiftInfos.size() == 0){
+            throw new ServiceException(Constants.CODE_503, "无坐诊信息");
+        }
         return shiftInfos;
     }
 

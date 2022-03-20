@@ -13,4 +13,5 @@ public class ShiftInfoDTO {
      *  如果是返回某位医生的坐诊信息，1表示上午，2表示下午
      */
     private int orderTimeSlice;
+    private int patientsNumber;
 }

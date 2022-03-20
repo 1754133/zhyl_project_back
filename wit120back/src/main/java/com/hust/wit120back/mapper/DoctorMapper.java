@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface DoctorMapper {
@@ -22,4 +23,18 @@ public interface DoctorMapper {
             @Result(column = "time_slice", property = "orderTimeSlice")
     })
     ArrayList<ShiftInfoDTO> selectDocShiftInfoById(Integer doctorId);
+
+    @Select("select time_slice, patients_number from doctor_shift_info where doctor_id=#{doctorId} and day=#{orderDay} and time_slice<=3")
+    @Results({
+            @Result(column = "time_slice", property = "orderTimeSlice"),
+            @Result(column = "patients_number", property = "patientsNumber")
+    })
+    List<ShiftInfoDTO> selectDocShiftInfoByIdAndDayAndMor(Integer doctorId, int orderDay);
+
+    @Select("select time_slice, patients_number from doctor_shift_info where doctor_id=#{doctorId} and day=#{orderDay} and time_slice>=4")
+    @Results({
+            @Result(column = "time_slice", property = "orderTimeSlice"),
+            @Result(column = "patients_number", property = "patientsNumber")
+    })
+    List<ShiftInfoDTO> selectDocShiftInfoByIdAndDayAndAft(Integer doctorId, int orderDay);
 }

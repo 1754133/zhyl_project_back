@@ -79,4 +79,24 @@ public class DocInfoServiceImpl implements DocInfoService {
         }
         return docInfoMapper.deleteDocInfoByDocInfoId(docInfoId);
     }
+
+    @Override
+    public DocInfoDTO getDocInfoByDocId(Integer docId) {
+        DocInfo docInfo = docInfoMapper.selectDocInfoByDocId(docId);
+        if (docInfo == null){
+            throw new ServiceException(Constants.CODE_600, "要查询的科室信息不存在");
+        }
+        String department = departmentMapper.selectDepartmentNameByDepartmentId(docInfo.getDepartmentId());
+        if (department == null){
+            department = "暂无";
+        }
+        DocInfoDTO docInfoDTO = new DocInfoDTO();
+        docInfoDTO.setAge(docInfo.getAge());
+        docInfoDTO.setDocDesc(docInfo.getDocDesc());
+        docInfoDTO.setDocName(docInfo.getDocName());
+        docInfoDTO.setDepartment(department);
+        docInfoDTO.setLevel(docInfo.getLevel());
+        docInfoDTO.setGender(docInfo.isGender());
+        return docInfoDTO;
+    }
 }
