@@ -7,10 +7,7 @@ import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -20,8 +17,8 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping("/conciseShiftInfo")
-    public Result getConciseShiftInfo(@RequestParam Integer doctorId){
+    @GetMapping("/conciseShiftInfo/{doctorId}")
+    public Result getConciseShiftInfo(@PathVariable Integer doctorId){
         ArrayList<ConciseShiftInfoDTO> shiftInfos;
         try{
             shiftInfos = doctorService.getDocConciseShiftInfo(doctorId);
@@ -31,8 +28,8 @@ public class DoctorController {
         return Result.success(shiftInfos);
     }
 
-    @GetMapping("/shiftInfo")
-    public Result getShiftInfo(@RequestParam Integer doctorId){
+    @GetMapping("/shiftInfo/{doctorId}")
+    public Result getShiftInfo(@PathVariable Integer doctorId){
         ArrayList<ShiftInfoDTO> shiftInfos;
         try{
             shiftInfos = doctorService.getDocShiftInfo(doctorId);
