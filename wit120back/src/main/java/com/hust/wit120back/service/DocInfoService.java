@@ -11,4 +11,6 @@ public interface DocInfoService {
     int updateDocInfo(DocInfoDTO docInfoDTO);
 
     int deleteDocInfo(Integer docInfoId);
+
+    DocInfoDTO getDocInfoByDocId(Integer docId);
 }

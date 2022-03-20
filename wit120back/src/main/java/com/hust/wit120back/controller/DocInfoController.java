@@ -35,4 +35,12 @@ public class DocInfoController {
         }
         return Result.success(docInfoService.deleteDocInfo(docInfoId));
     }
+
+    @GetMapping("/{docId}")
+    public Result getDocInfoByDocId(@PathVariable Integer docId){
+        if (docId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(docInfoService.getDocInfoByDocId(docId));
+    }
 }

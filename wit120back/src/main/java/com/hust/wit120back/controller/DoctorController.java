@@ -38,4 +38,12 @@ public class DoctorController {
         }
         return Result.success(shiftInfos);
     }
+
+    @GetMapping("/shiftInfo/slice/{doctorId}/{orderDay}/{noon}")
+    public Result getPatientNumBySlice(@PathVariable Integer doctorId, @PathVariable int orderDay, @PathVariable int noon){
+        if (doctorId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(doctorService.getDocShiftInfoBySlice(doctorId, orderDay, noon));
+    }
 }
