@@ -17,8 +17,16 @@ public class DoctorServiceImpl implements DoctorService {
     private DoctorMapper doctorMapper;
 
     @Override
-    public ArrayList<ConciseShiftInfoDTO> getDocShiftInfo(Integer doctorId){
-        ArrayList<ConciseShiftInfoDTO> shiftInfos = doctorMapper.selectDocShinftInfoById(doctorId);
+    public ArrayList<ConciseShiftInfoDTO> getDocConciseShiftInfo(Integer doctorId){
+        ArrayList<ConciseShiftInfoDTO> shiftInfos = doctorMapper.selectDocConciseShiftInfoById(doctorId);
+        if(shiftInfos.size() == 0)
+            throw new ServiceException(Constants.CODE_503, "无坐诊信息");
+        return shiftInfos;
+    }
+
+    @Override
+    public ArrayList<ShiftInfoDTO> getDocShiftInfo(Integer doctorId){
+        ArrayList<ShiftInfoDTO> shiftInfos = doctorMapper.selectDocShiftInfoById(doctorId);
         if(shiftInfos.size() == 0)
             throw new ServiceException(Constants.CODE_503, "无坐诊信息");
         return shiftInfos;

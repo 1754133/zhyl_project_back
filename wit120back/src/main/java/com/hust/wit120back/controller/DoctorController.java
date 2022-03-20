@@ -21,8 +21,19 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @GetMapping("/conciseShiftInfo")
-    public Result getShiftInfo(@RequestParam Integer doctorId){
+    public Result getConciseShiftInfo(@RequestParam Integer doctorId){
         ArrayList<ConciseShiftInfoDTO> shiftInfos;
+        try{
+            shiftInfos = doctorService.getDocConciseShiftInfo(doctorId);
+        }catch(ServiceException e){
+            return Result.error(Constants.CODE_503, "无坐诊信息");
+        }
+        return Result.success(shiftInfos);
+    }
+
+    @GetMapping("/shiftInfo")
+    public Result getShiftInfo(@RequestParam Integer doctorId){
+        ArrayList<ShiftInfoDTO> shiftInfos;
         try{
             shiftInfos = doctorService.getDocShiftInfo(doctorId);
         }catch(ServiceException e){
