@@ -35,4 +35,48 @@ public class TimeUtils {
         //System.out.println("日期格式---->" + times);
         return times;
     }
+
+    /**
+     * 计算日期
+     */
+    public static String calDate(String curDate, int k){
+        // 默认k > 0，因为预约的日期总会等于或者晚于预约单创建的日期
+        int year = Integer.parseInt(curDate.substring(0, 4));
+        int month = Integer.parseInt(curDate.substring(5, 7));
+        int day = Integer.parseInt(curDate.substring(8, 10));
+        int[] days = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30};
+        //判断是否为闰年
+        if((year % 100 == 0 && year % 400 == 0) || (year % 100 != 0 && year % 4 == 0))
+            days[1] = 29;
+        while(k-- > 0){
+            day++;
+            if(day > days[month - 1]) {
+                day -= days[month - 1];
+                month++;
+                if (month > 12) {
+                    month -= 12;
+                    year++;
+                }
+            }
+        }
+        /*
+        //若k < 0（备用）
+        if(k < 0){
+            while(k++ < 0){
+                day--;
+                if(day == 0){
+                    month--;
+                    if(month == 0){
+                        month += 12;
+                        year--;
+                    }
+                    day += days[month - 1];
+                }
+            }
+        }
+         */
+        curDate = String.valueOf(year) + "-" + (month < 10 ? "0" : "") + String.valueOf(month) + "-" +
+                 (day < 10 ? "0" : "") + String.valueOf(day);
+        return curDate;
+    }
 }

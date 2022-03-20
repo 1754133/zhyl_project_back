@@ -1,5 +1,6 @@
 package com.hust.wit120back.service;
 
+import com.hust.wit120back.dto.OrderDTO;
 import com.hust.wit120back.dto.PasswordDTO;
 import com.hust.wit120back.dto.UserDTO;
 import com.hust.wit120back.entity.User;
@@ -19,4 +20,6 @@ public interface UserService {
     boolean addDoc(User user);
 
     boolean deleteDoc(Integer userId);
+
+    List<OrderDTO> getAllOrders(Integer patientId);
 }

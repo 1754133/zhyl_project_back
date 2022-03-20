@@ -1,8 +1,11 @@
 package com.hust.wit120back.mapper;
 
 import com.hust.wit120back.dto.OrderDTO;
+import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.entity.Order;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface OrderMapper {
@@ -32,4 +35,13 @@ public interface OrderMapper {
 
     @Insert("insert into my_order(patient_id, doctor_id, order_day, order_time_slice, cost) values (#{patientId}, #{doctorId}, #{orderDay}, #{orderTimeSlice}, #{cost})")
     void addAppointment(Order order);
+
+    @Select("select doctor_id, create_time, order_day, order_time_slice, cost from my_order where patient_id = #{patientId}")
+    @Results({
+            @Result(column = "doctor_id", property = "doctorId"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "order_day", property = "orderDay"),
+            @Result(column = "order_time_slice", property = "orderTimeSlice")
+    })
+    List<OrderDTO> selectOrders(Integer patientId);
 }

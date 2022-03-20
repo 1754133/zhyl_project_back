@@ -53,4 +53,10 @@ public interface DocInfoMapper {
 
     @Select("select doc_info_id from doc_info where department_id=#{departmentId}")
     List<Integer> selectDocInfoIdByDepartmentId(Integer departmentId);
+
+    @Select("select doc_name from doc_info where doc_id = #{doctorId}")
+    String selectDocNameById(Integer doctorId);
+
+    @Select("select department_id from doc_info where doc_id = #{doctorId}")
+    Integer selectDepartmentIdByDocId(Integer doctorId);
 }

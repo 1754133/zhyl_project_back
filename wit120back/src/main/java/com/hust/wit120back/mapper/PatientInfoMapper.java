@@ -19,4 +19,7 @@ public interface PatientInfoMapper {
 
     @Update("update patient_info set real_name=#{realName},identification_num=#{identificationNum},gender=#{gender},age=#{age} where user_id=#{userId}")
     int updatePatientInfo(PatientInfo patientInfo);
+
+    @Select("select real_name from patient_info where user_id = #{patientId}")
+    String selectRealNameById(Integer patientId);
 }
