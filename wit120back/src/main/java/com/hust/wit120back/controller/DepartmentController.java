@@ -49,8 +49,8 @@ public class DepartmentController {
         return Result.success(department);
     }
 
-    @GetMapping("/shiftInfo")
-    public Result getShiftInfo(@RequestParam Integer departmentId){
+    @GetMapping("/shiftInfo/{departmentId}")
+    public Result getShiftInfo(@PathVariable Integer departmentId){
         ArrayList<ConciseShiftInfoDTO> shiftInfos;
         try{
             shiftInfos = departmentService.getDepartShiftInfo(departmentId);
