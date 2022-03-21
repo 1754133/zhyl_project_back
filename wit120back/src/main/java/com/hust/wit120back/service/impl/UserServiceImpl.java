@@ -41,6 +41,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DepartmentMapper departmentMapper;
 
+    @Autowired
+    private MedicalTechnicianMapper medicalTechnicianMapper;
+
     public UserDTO addUser(UserDTO userDTO){
         if (userMapper.selectUserByUsername(userDTO.getUsername()) != null){
             throw new ServiceException(Constants.CODE_700, "用户名已被注册");
@@ -169,5 +172,27 @@ public class UserServiceImpl implements UserService {
         //将orders按照预约单创建时间排序
         Collections.sort(orders);
         return orders;
+    }
+
+    /**
+     * 查询权限为4且未被分配医技的帐号
+     * @return List<String>
+     */
+    @Override
+    public List<String> getUsernameByPermission() {
+        //存储结果的数组
+        List<String> res = new ArrayList<>();
+        //查询权限为4的所有账户
+        List<User> userList1 = userMapper.selectUsersByPermission(4);
+        if (userList1.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到账户名信息");
+        }
+        //逐个判断每个账户是否已经分配了医技,如果没有则将用户名加入到结果数组中
+        for (User user : userList1){
+            if (medicalTechnicianMapper.selectMedicalTechnicianByDocId(user.getUserId()) == null){
+                res.add(user.getUsername());
+            }
+        }
+        return res;
     }
 }

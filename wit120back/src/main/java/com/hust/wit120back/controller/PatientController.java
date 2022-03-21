@@ -29,4 +29,12 @@ public class PatientController {
         }
         return Result.success(patientService.getPatientInfo(username));
     }
+
+    @GetMapping("/patientInfo/realName/{username}")
+    public Result getRealNameByUsername(@PathVariable String username){
+        if (StrUtil.isBlank(username)){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(patientService.getRealNameByUsername(username));
+    }
 }

@@ -19,17 +19,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void checkParameter(OrderDTO orderDTO){
         String username = orderDTO.getPatientName();
-        String doctorName = orderDTO.getDoctorName();
+        Integer doctorId = orderDTO.getDoctorId();
         int orderDay = orderDTO.getOrderDay();
         int orderTimeSlice = orderDTO.getOrderTimeSlice();
         int cost = orderDTO.getCost();
         //参数错误
-        if(StrUtil.isBlank(username) || StrUtil.isBlank(doctorName))
+        if(StrUtil.isBlank(username) || doctorId == null)
             throw new ServiceException(Constants.CODE_400, "参数错误");
         if((orderDay < 1 || orderDay > 7) || (orderTimeSlice < 1 || orderTimeSlice > 6) || cost <= 0)
             throw new ServiceException(Constants.CODE_400, "参数错误");
         Integer patientId = orderMapper.selectPatientIdByName(username);
-        Integer doctorId = orderMapper.selectDoctorIdByName(doctorName);
         //查询该时段该用户是否已经预约
         if(orderMapper.selectOrder(patientId, doctorId, orderDay, orderTimeSlice) != null)
             throw new ServiceException(Constants.CODE_502, "该用户已预约");
@@ -40,15 +39,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addPatient(String username, String doctorName, int orderDay, int orderTimeSlice){
-        Integer doctorId = orderMapper.selectDoctorIdByName(doctorName);
+    public void addPatient(Integer doctorId, int orderDay, int orderTimeSlice){
+        //Integer doctorId = orderMapper.selectDoctorIdByName(doctorName);
         orderMapper.addPatientsNumber(doctorId, orderDay, orderTimeSlice);
     }
 
     @Override
     public void addAppointment(OrderDTO orderDTO){
         Integer patientId = orderMapper.selectPatientIdByName(orderDTO.getPatientName());
-        Integer doctorId = orderMapper.selectDoctorIdByName(orderDTO.getDoctorName());
+        Integer doctorId = orderDTO.getDoctorId();
         Order order = new Order();
         order.setPatientId(patientId);
         order.setDoctorId(doctorId);

@@ -7,4 +7,6 @@ public interface PatientService {
     int updatePatientInfo(PatientInfoDTO patientInfoDTO);
 
     PatientInfo getPatientInfo(String username);
+
+    String getRealNameByUsername(String username);
 }

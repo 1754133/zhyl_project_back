@@ -42,4 +42,8 @@ public interface UserMapper {
 
     @Delete("delete from user where user_id=#{userId}")
     int deleteUserByUserId(Integer userId);
+
+    @Select("select * from user where permission=#{permission}")
+    @Result(column = "user_id", property = "userId")
+    List<User> selectUsersByPermission(int permission);
 }

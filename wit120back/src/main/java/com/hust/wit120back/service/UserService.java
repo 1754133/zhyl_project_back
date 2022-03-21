@@ -22,4 +22,6 @@ public interface UserService {
     boolean deleteDoc(Integer userId);
 
     List<OrderDTO> getAllOrders(Integer patientId);
+
+    List<String> getUsernameByPermission();
 }

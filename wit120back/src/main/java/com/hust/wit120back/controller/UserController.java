@@ -93,4 +93,14 @@ public class UserController {
             return Result.error(Constants.CODE_600, "无预约记录");
         return Result.success(orders);
     }
+
+    /**
+     * 查询可用的医技负责帐号
+     * @return result
+     */
+    @GetMapping("/username")
+    public Result getUsernameByPermission(){
+        return Result.success(userService.getUsernameByPermission());
+    }
+
 }

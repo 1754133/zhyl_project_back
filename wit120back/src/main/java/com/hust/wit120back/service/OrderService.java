@@ -5,6 +5,6 @@ import com.hust.wit120back.entity.Order;
 
 public interface OrderService {
     void checkParameter(OrderDTO orderDTO);
-    void addPatient(String username, String doctorName, int orderDay, int orderTimeSlice);
+    void addPatient(Integer doctorId, int orderDay, int orderTimeSlice);
     void addAppointment(OrderDTO orderDTO);
 }

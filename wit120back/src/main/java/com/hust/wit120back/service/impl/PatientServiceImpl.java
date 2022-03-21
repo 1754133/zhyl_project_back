@@ -42,4 +42,17 @@ public class PatientServiceImpl implements PatientService {
         }
         return patientInfoMapper.selectPatientInfoByUserId(user.getUserId());
     }
+
+    @Override
+    public String getRealNameByUsername(String username) {
+        User user = userMapper.selectUserByUsername(username);
+        if (user == null){
+            throw new ServiceException(Constants.CODE_600, "用户不存在");
+        }
+        PatientInfo patientInfo = patientInfoMapper.selectPatientInfoByUserId(user.getUserId());
+        if (patientInfo == null){
+            throw new ServiceException(Constants.CODE_600, "用户的信息不存在");
+        }
+        return patientInfo.getRealName();
+    }
 }
