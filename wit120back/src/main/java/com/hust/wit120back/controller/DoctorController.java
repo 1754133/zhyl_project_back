@@ -3,6 +3,7 @@ package com.hust.wit120back.controller;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.ConciseShiftInfoDTO;
+import com.hust.wit120back.dto.OrderDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.service.DoctorService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctor")
@@ -45,5 +47,16 @@ public class DoctorController {
             return Result.error(Constants.CODE_400, "参数错误");
         }
         return Result.success(doctorService.getDocShiftInfoBySlice(doctorId, orderDay, noon));
+    }
+
+    @GetMapping("/todayPatient/{doctorId}/{date}")
+    public Result getPatientsByDate(@PathVariable Integer doctorId, @PathVariable String date){
+        //date YYYY-MM-DD
+        if(doctorId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        List<OrderDTO> orders = doctorService.getPatientsByDate(doctorId, date);
+        if(orders.size() == 0)
+            return Result.error(Constants.CODE_600, "无挂号患者信息");
+        return Result.success(orders);
     }
 }

@@ -4,7 +4,10 @@ import lombok.Data;
 
 @Data
 public class OrderDTO implements Comparable<OrderDTO>{
-    private String username;
+    private Integer orderId; //订单编号
+    private Integer patientId;
+    private String patientName;
+    private boolean gender;
     private Integer doctorId;
     private String doctorName;
     private String departmentName;

@@ -3,6 +3,7 @@ package com.hust.wit120back.mapper;
 import com.hust.wit120back.dto.OrderDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.entity.Order;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -44,4 +45,15 @@ public interface OrderMapper {
             @Result(column = "order_time_slice", property = "orderTimeSlice")
     })
     List<OrderDTO> selectOrders(Integer patientId);
+
+    @Select("select order_id, patient_id, doctor_id, create_time, order_day, order_time_slice, cost from my_order where doctor_id = #{doctorId}")
+    @Results({
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "patient_id", property = "patientId"),
+            @Result(column = "doctor_id", property = "doctorId"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "order_day", property = "orderDay"),
+            @Result(column = "order_time_slice", property = "orderTimeSlice")
+    })
+    List<OrderDTO> selectOrdersByDocId(Integer doctorId);
 }

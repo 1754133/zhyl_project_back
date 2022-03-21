@@ -1,6 +1,8 @@
 package com.hust.wit120back.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TimeUtils {
@@ -78,5 +80,25 @@ public class TimeUtils {
         curDate = String.valueOf(year) + "-" + (month < 10 ? "0" : "") + String.valueOf(month) + "-" +
                  (day < 10 ? "0" : "") + String.valueOf(day);
         return curDate;
+    }
+
+    /**
+     *
+     */
+    public static String getOrderDate(String createDate, int orderDay){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = null;
+        try{
+            d = f.parse(createDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        cal.setTime(d);
+        int createDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if(createDay == 0) createDay = 7;
+        if(orderDay == 0) orderDay = 7;
+        String orderDate = calDate(createDate, (orderDay + 7 - createDay) % 7);
+        return orderDate;
     }
 }

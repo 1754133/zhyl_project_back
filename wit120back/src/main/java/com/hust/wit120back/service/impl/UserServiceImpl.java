@@ -156,34 +156,15 @@ public class UserServiceImpl implements UserService {
         List<OrderDTO> orders = orderMapper.selectOrders(patientId);
         for(OrderDTO order : orders){
             //设置病人姓名
-            order.setUsername(patientInfoMapper.selectRealNameById(patientId));
+            order.setPatientName(patientInfoMapper.selectRealNameById(patientId));
             //设置医生姓名
             order.setDoctorName(docInfoMapper.selectDocNameById(order.getDoctorId()));
             //设置诊室名称
             Integer departmentId = docInfoMapper.selectDepartmentIdByDocId(order.getDoctorId());
             order.setDepartmentName(departmentMapper.selectDepartmentNameByDepartmentId(departmentId));
             //设置预约日期
-            //通过创建日期明确订单创建时是周几
-            String date = order.getCreateTime().substring(0, 10);
-            Calendar cal = Calendar.getInstance();
-            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-            Date d = null;
-            try{
-                d = f.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            cal.setTime(d);
-            int createDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
-            if(createDay == 0) createDay = 7;
-            //与orderDay进行比较
-            int orderDay = order.getOrderDay();
-            if(orderDay == 0) orderDay = 7;
-            String createDate = order.getCreateTime().substring(0, 10);
-            String orderDate;
-            if(orderDay >= createDay) orderDate = TimeUtils.calDate(createDate, orderDay - createDay);
-            else orderDate = TimeUtils.calDate(createDate, orderDay + 7 - createDay);
-            order.setOrderTime(orderDate);
+            String date = TimeUtils.getOrderDate(order.getCreateTime(), order.getOrderDay());
+            order.setOrderTime(date);
         }
         //将orders按照预约单创建时间排序
         Collections.sort(orders);

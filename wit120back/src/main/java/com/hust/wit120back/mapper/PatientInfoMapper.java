@@ -22,4 +22,7 @@ public interface PatientInfoMapper {
 
     @Select("select real_name from patient_info where user_id = #{patientId}")
     String selectRealNameById(Integer patientId);
+
+    @Select("select gender from patient_info where user_id = #{patientId}")
+    boolean selectGenderById(Integer patientId);
 }

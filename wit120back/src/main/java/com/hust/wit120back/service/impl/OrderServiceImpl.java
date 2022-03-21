@@ -18,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void checkParameter(OrderDTO orderDTO){
-        String username = orderDTO.getUsername();
+        String username = orderDTO.getPatientName();
         String doctorName = orderDTO.getDoctorName();
         int orderDay = orderDTO.getOrderDay();
         int orderTimeSlice = orderDTO.getOrderTimeSlice();
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addAppointment(OrderDTO orderDTO){
-        Integer patientId = orderMapper.selectPatientIdByName(orderDTO.getUsername());
+        Integer patientId = orderMapper.selectPatientIdByName(orderDTO.getPatientName());
         Integer doctorId = orderMapper.selectDoctorIdByName(orderDTO.getDoctorName());
         Order order = new Order();
         order.setPatientId(patientId);

@@ -35,7 +35,7 @@ public class OrderController {
             return Result.success(e);
         }
         //医生值班信息表中增加挂号人数
-        orderService.addPatient(orderDTO.getUsername(), orderDTO.getDoctorName(), orderDTO.getOrderDay(), orderDTO.getOrderTimeSlice());
+        orderService.addPatient(orderDTO.getPatientName(), orderDTO.getDoctorName(), orderDTO.getOrderDay(), orderDTO.getOrderTimeSlice());
         //数据库中增加挂号单
         orderService.addAppointment(orderDTO);
         return Result.success();
