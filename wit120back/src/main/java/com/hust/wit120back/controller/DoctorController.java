@@ -59,4 +59,46 @@ public class DoctorController {
             return Result.error(Constants.CODE_600, "无挂号患者信息");
         return Result.success(orders);
     }
+
+    @PostMapping("/prescription")
+    public Result addPrescription(@RequestParam Integer orderId, @RequestParam String prescription){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(doctorService.addPrescription(orderId, prescription));
+    }
+
+    @GetMapping("/prescription/{orderId}")
+    public Result getPrescription(@PathVariable Integer orderId){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(doctorService.getPrescription(orderId));
+    }
+
+    @PutMapping("/prescription/update")
+    public Result updatePrescription(@RequestParam Integer orderId, @RequestParam String prescription){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(doctorService.updatePrescription(orderId, prescription));
+    }
+
+    @PostMapping("/caseHistory")
+    public Result addCaseHistory(@RequestParam Integer orderId, @RequestParam String caseHistory){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(doctorService.addCaseHistory(orderId, caseHistory));
+    }
+
+    @GetMapping("/caseHistory/{orderId}")
+    public Result getCaseHistory(@PathVariable Integer orderId){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(doctorService.getCaseHistory(orderId));
+    }
+
+    @PutMapping("/caseHistory/update")
+    public Result updateCaseHistory(@RequestParam Integer orderId, @RequestParam String caseHistory){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(doctorService.updateCaseHistory(orderId, caseHistory));
+    }
 }

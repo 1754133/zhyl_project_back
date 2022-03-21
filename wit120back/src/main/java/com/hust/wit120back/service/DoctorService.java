@@ -12,4 +12,10 @@ public interface DoctorService {
     ArrayList<ShiftInfoDTO> getDocShiftInfo(Integer doctorId);
     List<ShiftInfoDTO> getDocShiftInfoBySlice(Integer doctorId, int orderDay, int noon);
     List<OrderDTO> getPatientsByDate(Integer doctorId, String date);
+    boolean addPrescription(Integer orderId, String prescription);
+    String getPrescription(Integer orderId);
+    int updatePrescription(Integer orderId, String prescription);
+    boolean addCaseHistory(Integer orderId, String prescription);
+    String getCaseHistory(Integer orderId);
+    int updateCaseHistory(Integer orderId, String caseHistory);
 }

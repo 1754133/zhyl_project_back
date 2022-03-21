@@ -34,6 +34,12 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private DepartmentMapper departmentMapper;
 
+    @Autowired
+    private PrescriptionMapper prescriptionMapper;
+
+    @Autowired
+    private CaseHistoryMapper caseHistoryMapper;
+
     @Override
     public ArrayList<ConciseShiftInfoDTO> getDocConciseShiftInfo(Integer doctorId){
         ArrayList<ConciseShiftInfoDTO> shiftInfos = doctorMapper.selectDocConciseShiftInfoById(doctorId);
@@ -87,4 +93,47 @@ public class DoctorServiceImpl implements DoctorService {
         return todayOrders;
     }
 
+    @Override
+    public boolean addPrescription(Integer orderId, String prescription){
+        if(prescriptionMapper.selectPrescIdByOrderId(orderId) != null)
+            throw new ServiceException(Constants.CODE_700, "预约单对应处方已存在");
+        prescriptionMapper.addPrescription(orderId, prescription);
+        return true;
+    }
+
+    @Override
+    public String getPrescription(Integer orderId){
+        if(prescriptionMapper.selectPrescIdByOrderId(orderId) == null)
+            throw new ServiceException(Constants.CODE_600, "无对应处方");
+        return prescriptionMapper.selectPrescByOrderId(orderId);
+    }
+
+    @Override
+    public int updatePrescription(Integer orderId, String prescription){
+        if(prescriptionMapper.selectPrescIdByOrderId(orderId) == null)
+            throw new ServiceException(Constants.CODE_600, "无对应处方");
+        return prescriptionMapper.updatePrescription(orderId, prescription);
+    }
+
+    @Override
+    public boolean addCaseHistory(Integer orderId, String caseHistory){
+        if(caseHistoryMapper.selectCaseHisIdByOrderId(orderId) != null)
+            throw new ServiceException(Constants.CODE_700, "预约单对应病历已存在");
+        caseHistoryMapper.addCaseHistory(orderId, caseHistory);
+        return true;
+    }
+
+    @Override
+    public String getCaseHistory(Integer orderId){
+        if(caseHistoryMapper.selectCaseHisIdByOrderId(orderId) == null)
+            throw new ServiceException(Constants.CODE_600, "无对应病历");
+        return caseHistoryMapper.selectCaseHisByOrderId(orderId);
+    }
+
+    @Override
+    public int updateCaseHistory(Integer orderId, String caseHistory){
+        if(caseHistoryMapper.selectCaseHisIdByOrderId(orderId) == null)
+            throw new ServiceException(Constants.CODE_600, "无对应病历");
+        return caseHistoryMapper.updateCaseHistory(orderId, caseHistory);
+    }
 }
