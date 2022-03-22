@@ -26,6 +26,9 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
     @Autowired
     private MedicalResourceOrderMapper medicalResourceOrderMapper;
 
+    @Autowired
+    private ResourceRecommendMapper resourceRecommendMapper;
+
     @Override
     public void checkParameter(MedResOrderDTO medResOrderDTO){
         //check patientId, orderId, medResName, day, noon, cost
@@ -79,5 +82,15 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             medResOrder.setMedResName(medicalResourceMapper.selectMedResNameById(medResOrder.getMedResId()));
         }
         return medResOrders;
+    }
+
+    @Override
+    public boolean addMedResRecommend(Integer orderId, String recommend){
+        if(resourceRecommendMapper.selectOrderId(orderId) == null){
+            resourceRecommendMapper.addRecommend(orderId, recommend);
+        }else{
+            resourceRecommendMapper.updateRecommend(orderId, recommend);
+        }
+        return true;
     }
 }

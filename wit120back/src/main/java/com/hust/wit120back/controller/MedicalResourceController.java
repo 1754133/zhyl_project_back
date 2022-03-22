@@ -55,4 +55,14 @@ public class MedicalResourceController {
         List<MedResOrderDTO> medResOrders = medicalResourceService.getMedResAppointment(patientId, orderId);
         return Result.success(medResOrders);
     }
+
+    /**
+     * 保存医生推荐的医技预约
+     */
+    @PostMapping ("/recommend")
+    Result addMedResRecommend(@RequestParam Integer orderId, @RequestParam String recommend){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(medicalResourceService.addMedResRecommend(orderId, recommend));
+    }
 }
