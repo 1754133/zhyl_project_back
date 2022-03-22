@@ -22,18 +22,6 @@ public interface OrderMapper {
     })
     Order selectOrder(Integer patientId, Integer doctorId, int orderDay, int orderTimeSlice);
 
-    @Select("select patients_number from doctor_shift_info where doctor_id = #{doctorId} and day = #{orderDay} and time_slice = #{orderTimeSlice}")
-    Integer selectNumAppointmentByDoctorAndTime(Integer doctorId, int orderDay, int orderTimeSlice);
-
-    @Select("select doc_id from doc_info where doc_name = #{doctorName}")
-    int selectDoctorIdByName(String doctorName);
-
-    @Select("select user_id from user where username = #{patientName}")
-    int selectPatientIdByName(String patientName);
-
-    @Update("update doctor_shift_info set patients_number = patients_number + 1 where doctor_id = #{doctorId} and day = #{orderDay} and time_slice = #{orderTimeSlice}")
-    int addPatientsNumber(Integer doctorId, int orderDay, int orderTimeSlice);
-
     @Insert("insert into my_order(patient_id, doctor_id, order_day, order_time_slice, cost) values (#{patientId}, #{doctorId}, #{orderDay}, #{orderTimeSlice}, #{cost})")
     void addAppointment(Order order);
 
@@ -59,4 +47,16 @@ public interface OrderMapper {
 
     @Select("select order_id from my_order where order_id = #{orderId}")
     Integer selectOrderId(Integer orderId);
+
+    @Select("select doctor_id from my_order where order_id = #{orderId}")
+    Integer selectDoctorIdByOrderId(Integer orderId);
+
+    @Select("select order_day from my_order where order_id = #{orderId}")
+    int selectOrderDayByOrderId(Integer orderId);
+
+    @Select("select order_time_slice from my_order where order_id = #{orderId}")
+    int selectOrderTimeSliceByOrderId(Integer orderId);
+
+    @Delete("delete from my_order where order_id = #{orderId}")
+    void deleteOrder(Integer orderId);
 }

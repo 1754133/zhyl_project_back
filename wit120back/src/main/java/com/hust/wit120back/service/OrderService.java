@@ -7,4 +7,5 @@ public interface OrderService {
     void checkParameter(OrderDTO orderDTO);
     void addPatient(Integer doctorId, int orderDay, int orderTimeSlice);
     void addAppointment(OrderDTO orderDTO);
+    void deleteOrder(Integer orderId);
 }

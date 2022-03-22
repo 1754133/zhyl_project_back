@@ -40,6 +40,9 @@ public interface UserMapper {
     @Result(column = "user_id", property = "userId")
     User selectUserByUserIdAndPermission(Integer userId, int permission);
 
+    @Select("select user_id from user where username = #{patientName}")
+    int selectPatientIdByName(String patientName);
+
     @Delete("delete from user where user_id=#{userId}")
     int deleteUserByUserId(Integer userId);
 

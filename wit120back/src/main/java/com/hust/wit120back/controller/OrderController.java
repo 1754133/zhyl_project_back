@@ -40,4 +40,10 @@ public class OrderController {
         orderService.addAppointment(orderDTO);
         return Result.success();
     }
+
+    @DeleteMapping("/appointment/{orderId}")
+    public Result deleteAppointment(@PathVariable Integer orderId){
+        orderService.deleteOrder(orderId);
+        return Result.success();
+    }
 }
