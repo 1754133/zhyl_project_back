@@ -10,6 +10,8 @@ import com.hust.wit120back.service.MedicalResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MedicalResourceServiceImpl implements MedicalResourceService {
     @Autowired
@@ -57,5 +59,25 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         Integer medResId = medicalResourceMapper.selectMedResName(medResOrderDTO.getMedResName());
         medResOrderDTO.setMedResId(medResId);
         medicalResourceOrderMapper.addAppointment(medResOrderDTO);
+    }
+
+    @Override
+    public List<MedResOrderDTO> getAllMedResAppointment(Integer patientId){
+        List<MedResOrderDTO> medResOrders;
+        medResOrders = medicalResourceOrderMapper.selectAllMedResOrdersByPatientId(patientId);
+        for(MedResOrderDTO medResOrder : medResOrders){
+            medResOrder.setMedResName(medicalResourceMapper.selectMedResNameById(medResOrder.getMedResId()));
+        }
+        return medResOrders;
+    }
+
+    @Override
+    public List<MedResOrderDTO> getMedResAppointment(Integer patientId, Integer orderId){
+        List<MedResOrderDTO> medResOrders;
+        medResOrders = medicalResourceOrderMapper.selectMedResOrderByPatientAndOrderId(patientId, orderId);
+        for(MedResOrderDTO medResOrder : medResOrders){
+            medResOrder.setMedResName(medicalResourceMapper.selectMedResNameById(medResOrder.getMedResId()));
+        }
+        return medResOrders;
     }
 }

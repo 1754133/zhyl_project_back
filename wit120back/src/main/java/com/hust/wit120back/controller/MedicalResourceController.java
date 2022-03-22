@@ -1,11 +1,16 @@
 package com.hust.wit120back.controller;
 
+import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.MedResOrderDTO;
 import com.hust.wit120back.dto.MedicalTechnicianDTO;
+import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.service.MedicalResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.invoke.ConstantCallSite;
+import java.util.List;
 
 @RestController
 @RequestMapping("/medicalResource")
@@ -27,5 +32,27 @@ public class MedicalResourceController {
         //预约单增加预约记录
         medicalResourceService.addAppointment(medResOrderDTO);
         return Result.success();
+    }
+
+    /**
+     * 查询患者的所有医技预约单
+     */
+    @GetMapping("/appointment/{patientId}")
+    public Result getMedResAppointment(@PathVariable Integer patientId){
+        if(patientId == null)
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        List<MedResOrderDTO> medResOrders = medicalResourceService.getAllMedResAppointment(patientId);
+        return Result.success(medResOrders);
+    }
+
+    /**
+     * 查询患者的医技预约单
+     */
+    @GetMapping("/appointment/{patientId}/{orderId}")
+    public Result getMedResAppointment(@PathVariable Integer patientId, @PathVariable Integer orderId){
+        if(patientId == null || orderId == null)
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        List<MedResOrderDTO> medResOrders = medicalResourceService.getMedResAppointment(patientId, orderId);
+        return Result.success(medResOrders);
     }
 }

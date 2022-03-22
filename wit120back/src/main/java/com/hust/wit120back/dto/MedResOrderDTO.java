@@ -17,6 +17,9 @@ public class MedResOrderDTO {
     private int cost;
 
     /*
-    进行医技预约的时候，前端需要传的参数：patientId, orderId, medResName, day, noon
+    进行医技预约的时候：前端需要传的参数：patientId, orderId, medResName（医技资源名称）, day, noon
+    医技预约查询：
+        前端参数：patientId, orderId
+        返回参数：medResOrderId（医技预约单编号）, medResName（医技资源名称）, createTime（预约单生成的时间）,day, noon, cost
      */
 }
