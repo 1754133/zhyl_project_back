@@ -25,8 +25,9 @@ public interface OrderMapper {
     @Insert("insert into my_order(patient_id, doctor_id, order_day, order_time_slice, cost) values (#{patientId}, #{doctorId}, #{orderDay}, #{orderTimeSlice}, #{cost})")
     void addAppointment(Order order);
 
-    @Select("select doctor_id, create_time, order_day, order_time_slice, cost from my_order where patient_id = #{patientId}")
+    @Select("select order_id, doctor_id, create_time, order_day, order_time_slice, cost from my_order where patient_id = #{patientId}")
     @Results({
+            @Result(column = "order_id", property = "orderId"),
             @Result(column = "doctor_id", property = "doctorId"),
             @Result(column = "create_time", property = "createTime"),
             @Result(column = "order_day", property = "orderDay"),
