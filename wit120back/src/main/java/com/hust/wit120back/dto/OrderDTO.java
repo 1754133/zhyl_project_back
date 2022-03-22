@@ -18,6 +18,7 @@ public class OrderDTO implements Comparable<OrderDTO>{
     //createTime: YYYY-MM-DD HH:MM:SS
     private String createTime; //预约单生成时间
     private int cost;
+    private boolean deal;
 
     @Override
     public int compareTo(OrderDTO order){

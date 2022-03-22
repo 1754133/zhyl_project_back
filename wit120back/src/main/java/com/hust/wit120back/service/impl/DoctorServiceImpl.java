@@ -1,5 +1,6 @@
 package com.hust.wit120back.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.OrderDTO;
@@ -86,6 +87,14 @@ public class DoctorServiceImpl implements DoctorService {
             //设置诊室名称
             Integer departmentId = docInfoMapper.selectDepartmentIdByDocId(order.getDoctorId());
             order.setDepartmentName(departmentMapper.selectDepartmentNameByDepartmentId(departmentId));
+            //病历
+            String caseHistory = caseHistoryMapper.selectCaseHisByOrderId(order.getOrderId());
+            //处方
+            String prescription = prescriptionMapper.selectPrescByOrderId(order.getOrderId());
+            if(StrUtil.isBlank(caseHistory) && StrUtil.isBlank(prescription))
+                order.setDeal(false);
+            else
+                order.setDeal(true);
             todayOrders.add(order);
         }
         //将orders按照预约单创建时间排序
