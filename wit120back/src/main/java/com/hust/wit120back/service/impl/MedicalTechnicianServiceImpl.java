@@ -121,4 +121,35 @@ public class MedicalTechnicianServiceImpl implements MedicalTechnicianService {
         }
         return medicalTechnicianMapper.deleteMedicalTechnicianById(technicianId);
     }
+
+    @Override
+    public Map<String, Object> getMedicalTechnicianByPageAndTechnicianName(String technicianName, int pageNum, int pageSize) {
+        //对页数进行处理
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int total = medicalTechnicianMapper.selectTotalByTechnicianName(technicianName);
+        if (total == 0){
+            throw new ServiceException(Constants.CODE_600, "未找到任何医技信息");
+        }
+        List<MedicalTechnician> medicalTechnicianList = medicalTechnicianMapper.selectMedicalTechnicianByPageAndTechnicianName(technicianName, pageNum, pageSize);
+        List<MedicalTechnicianDTO> medicalTechnicianDTOList = new ArrayList<>();
+        for (MedicalTechnician medicalTechnician : medicalTechnicianList){
+            MedicalTechnicianDTO medicalTechnicianDTO = new MedicalTechnicianDTO();
+            medicalTechnicianDTO.setTechnicianId(medicalTechnician.getTechnicianId());
+            medicalTechnicianDTO.setTechnicianName(medicalTechnician.getTechnicianName());
+            medicalTechnicianDTO.setCost(medicalTechnician.getCost());
+            User user = userMapper.selectUserByUserId(medicalTechnician.getDocId());
+            if (user == null){
+                throw new ServiceException(Constants.CODE_600, "负责帐号不存在");
+            }
+            medicalTechnicianDTO.setUsername(user.getUsername());
+            medicalTechnicianDTOList.add(medicalTechnicianDTO);
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", medicalTechnicianDTOList);
+        res.put("total", total);
+        return res;
+    }
 }

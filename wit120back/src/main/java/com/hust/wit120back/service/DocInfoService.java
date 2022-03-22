@@ -13,4 +13,6 @@ public interface DocInfoService {
     int deleteDocInfo(Integer docInfoId);
 
     DocInfoDTO getDocInfoByDocId(Integer docId);
+
+    Map<String, Object> selectPageByDoctorName(String doctorName, int pageNum, int pageSize);
 }

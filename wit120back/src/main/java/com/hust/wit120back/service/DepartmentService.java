@@ -23,4 +23,6 @@ public interface DepartmentService {
     int updateDepartment(Department department);
 
     boolean deleteDepartment(Integer departmentId);
+
+    Map<String, Object> getDepartmentByPageAndDepartmentName(String departmentName, int pageNum, int pageSize);
 }

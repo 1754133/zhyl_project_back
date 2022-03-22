@@ -72,4 +72,15 @@ public interface DepartmentMapper {
 
     @Delete("delete from department where department_id=#{departmentId}")
     int deleteDepartment(Integer departmentId);
+
+    @Select("select * from department where department_name like concat('%',#{departmentName},'%') limit #{pageNum},#{pageSize}")
+    @Results({
+            @Result(column = "department_id", property = "departmentId"),
+            @Result(column = "department_name", property = "departmentName"),
+            @Result(column = "department_desc", property = "departmentDesc")
+    })
+    List<Department> selectDepartmentByPageAndDepartmentName(String departmentName, int pageNum, int pageSize);
+
+    @Select("select count(*) from department where department_name like concat('%',#{departmentName},'%')")
+    int selectTotalByDepartmentName(String departmentName);
 }

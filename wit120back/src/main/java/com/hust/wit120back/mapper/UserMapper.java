@@ -46,4 +46,11 @@ public interface UserMapper {
     @Select("select * from user where permission=#{permission}")
     @Result(column = "user_id", property = "userId")
     List<User> selectUsersByPermission(int permission);
+
+    @Select("select * from user where permission=#{permission} and username like concat('%',#{username},'%') limit #{pageNum},#{pageSize}")
+    @Result(column = "user_id", property = "userId")
+    List<User> selectUserByPermissionAndUsername(int permission, String username, int pageNum, int pageSize);
+
+    @Select("select count(*) from user where permission=#{permission} and username like concat('%',#{username},'%')")
+    int selectTotalByPermissionAndUsername(int permission, String username);
 }

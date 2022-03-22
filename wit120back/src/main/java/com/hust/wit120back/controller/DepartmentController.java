@@ -37,6 +37,21 @@ public class DepartmentController {
         return Result.success(departmentService.getDepartmentByPage(pageNum, pageSize));
     }
 
+    /**
+     * 根据科室名模糊查询科室
+     * @param departmentName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/page/{departmentName}/{pageNum}/{pageSize}")
+    public Result getDepartmentByPageAndDepartmentName(@PathVariable String departmentName, @PathVariable int pageNum, @PathVariable int pageSize){
+        if (departmentName == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.getDepartmentByPageAndDepartmentName(departmentName, pageNum, pageSize));
+    }
+
     @GetMapping("/description")
     public Result getDepartmentDesc(@RequestParam Integer departmentId){
         //System.out.println("departmentId: " + departmentId);

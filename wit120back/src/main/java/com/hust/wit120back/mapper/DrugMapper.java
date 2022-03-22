@@ -35,4 +35,15 @@ public interface DrugMapper {
 
     @Delete("delete from drug where drug_id=#{drugId}")
     int deleteDrugByDrugId(Integer drugId);
+
+    @Select("select count(*) from drug where drug_name like concat('%',#{drugName},'%')")
+    int selectTotalByDrugName(String drugName);
+
+    @Select("select * from drug where drug_name like concat('%',#{drugName},'%') limit #{pageNum},#{pageSize}")
+    @Results({
+            @Result(column = "drug_id", property = "drugId"),
+            @Result(column = "drug_name", property = "drugName"),
+            @Result(column = "approval_num", property = "approvalNum")
+    })
+    List<Drug> selectDrugByPageAndDrugName(String drugName, int pageNum, int pageSize);
 }

@@ -14,4 +14,6 @@ public interface MedicalTechnicianService {
     int updateMedicalTechnician(MedicalTechnicianDTO medicalTechnicianDTO);
 
     int deleteMedicalTechnicianById(Integer technicianId);
+
+    Map<String, Object> getMedicalTechnicianByPageAndTechnicianName(String technicianName, int pageNum, int pageSize);
 }

@@ -51,4 +51,15 @@ public interface MedicalTechnicianMapper {
 
     @Delete("delete from medical_technician where technician_id=#{technicianId}")
     int deleteMedicalTechnicianById(Integer technicianId);
+
+    @Select("select count(*) from medical_technician where technician_name like concat('%',#{technicianName},'%')")
+    int selectTotalByTechnicianName(String technicianName);
+
+    @Select("select * from medical_technician where technician_name like concat('%',#{technicianName},'%') limit #{pageNum},#{pageSize}")
+    @Results({
+            @Result(column = "technician_id", property = "technicianId"),
+            @Result(column = "technician_name", property = "technicianName"),
+            @Result(column = "doc_id", property = "docId")
+    })
+    List<MedicalTechnician> selectMedicalTechnicianByPageAndTechnicianName(String technicianName, int pageNum, int pageSize);
 }

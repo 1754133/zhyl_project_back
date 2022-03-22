@@ -70,4 +70,18 @@ public interface DocInfoMapper {
 
     @Select("select department_id from doc_info where doc_id = #{doctorId}")
     Integer selectDepartmentIdByDocId(Integer doctorId);
+
+    @Select("select * from doc_info where doc_name like concat('%',#{doctorName},'%') limit #{pageNum},#{pageSize}")
+    @Results({
+            @Result(column = "doc_info_id", property = "docInfoId"),
+            @Result(column = "doc_id", property = "docId"),
+            @Result(column = "doc_name", property = "docName"),
+            @Result(column = "department_id", property = "departmentId"),
+            @Result(column = "doc_desc", property = "docDesc"),
+            @Result(column = "identification_num", property = "identificationNum")
+    })
+    List<DocInfo> selectPageByDoctorName(String doctorName, int pageNum, int pageSize);
+
+    @Select("select count(*) from doc_info where doc_name like concat('%',#{doctorName},'%')")
+    int selectTotalByDoctorName(String doctorName);
 }

@@ -99,4 +99,45 @@ public class DocInfoServiceImpl implements DocInfoService {
         docInfoDTO.setGender(docInfo.isGender());
         return docInfoDTO;
     }
+
+    /**
+     * 按医生姓名分页查询医生信息
+     * @param doctorName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Map<String, Object> selectPageByDoctorName(String doctorName, int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int count = docInfoMapper.selectTotalByDoctorName(doctorName);
+        if (count == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何医生信息");
+        }
+        List<DocInfo> docInfoList = docInfoMapper.selectPageByDoctorName(doctorName, pageNum, pageSize);
+        List<DocInfoDTO> docInfoDTOList = new ArrayList<>();
+        for (DocInfo docInfo : docInfoList){
+            DocInfoDTO docInfoDTO = new DocInfoDTO();
+            docInfoDTO.setDocInfoId(docInfo.getDocInfoId());
+            docInfoDTO.setDocName(docInfo.getDocName());
+            docInfoDTO.setLevel(docInfo.getLevel());
+            docInfoDTO.setDocDesc(docInfo.getDocDesc());
+            docInfoDTO.setIdentificationNum(docInfo.getIdentificationNum());
+            docInfoDTO.setGender(docInfo.isGender());
+            docInfoDTO.setAge(docInfo.getAge());
+            String department = departmentMapper.selectDepartmentNameByDepartmentId(docInfo.getDepartmentId());
+            if (department == null){
+                department = "暂无";
+            }
+            docInfoDTO.setDepartment(department);
+            docInfoDTOList.add(docInfoDTO);
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", docInfoDTOList);
+        res.put("total", count);
+        return res;
+    }
 }

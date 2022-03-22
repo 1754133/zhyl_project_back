@@ -24,4 +24,6 @@ public interface UserService {
     List<OrderDTO> getAllOrders(Integer patientId);
 
     List<String> getUsernameByPermission();
+
+    Map<String, Object> getDocAccountByUsername(String username, int pageNum, int pageSize);
 }

@@ -86,6 +86,14 @@ public class UserController {
         return Result.success(userService.getDocAccount(pageNum, pageSize));
     }
 
+    @GetMapping("/doc/{username}/{pageNum}/{pageSize}")
+    public Result getDocAccountByUsername(@PathVariable String username, @PathVariable int pageNum, @PathVariable int pageSize){
+        if (username == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(userService.getDocAccountByUsername(username, pageNum, pageSize));
+    }
+
     @GetMapping("/orders/{patientId}")
     public Result getAllOrders(@PathVariable Integer patientId){
         List<OrderDTO> orders = userService.getAllOrders(patientId);

@@ -59,4 +59,28 @@ public class DrugServiceImpl implements DrugService {
         }
         return drugMapper.deleteDrugByDrugId(drugId);
     }
+
+    /**
+     * 根据药品名模糊查询
+     * @param drugName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Map<String, Object> getDrugByPageAndDrugName(String drugName, int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int total = drugMapper.selectTotalByDrugName(drugName);
+        if (total == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何药品信息");
+        }
+        List<Drug> drugList = drugMapper.selectDrugByPageAndDrugName(drugName, pageNum, pageSize);
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", drugList);
+        res.put("total", total);
+        return res;
+    }
 }

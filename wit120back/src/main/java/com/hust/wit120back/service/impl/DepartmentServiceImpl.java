@@ -125,4 +125,21 @@ public class DepartmentServiceImpl implements DepartmentService {
         return true;
     }
 
+    @Override
+    public Map<String, Object> getDepartmentByPageAndDepartmentName(String departmentName, int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int total = departmentMapper.selectTotalByDepartmentName(departmentName);
+        if (total == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何科室信息");
+        }
+        List<Department> departmentList = departmentMapper.selectDepartmentByPageAndDepartmentName(departmentName, pageNum, pageSize);
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", departmentList);
+        res.put("total", total);
+        return res;
+    }
+
 }

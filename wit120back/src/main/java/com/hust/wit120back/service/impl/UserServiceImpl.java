@@ -195,4 +195,28 @@ public class UserServiceImpl implements UserService {
         }
         return res;
     }
+
+    /**
+     * 根据用户名模糊查询医生账号
+     * @param username
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Map<String, Object> getDocAccountByUsername(String username, int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int count = userMapper.selectTotalByPermissionAndUsername(2, username);
+        if (count == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何医生帐号");
+        }
+        List<User> userList = userMapper.selectUserByPermissionAndUsername(2, username, pageNum, pageSize);
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", userList);
+        res.put("total", count);
+        return res;
+    }
 }

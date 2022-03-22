@@ -25,6 +25,14 @@ public class MedicalTechnicianController {
         return Result.success(medicalTechnicianService.getMedicalTechnicianByPage(pageNum, pageSize));
     }
 
+    @GetMapping("/page/{technicianName}/{pageNum}/{pageSize}")
+    public Result getMedicalTechnicianByPageAndTechnicianName(@PathVariable String technicianName, @PathVariable int pageNum, @PathVariable int pageSize){
+        if (technicianName == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(medicalTechnicianService.getMedicalTechnicianByPageAndTechnicianName(technicianName, pageNum, pageSize));
+    }
+
     /**
      * 新增医技信息
      * @param medicalTechnicianDTO

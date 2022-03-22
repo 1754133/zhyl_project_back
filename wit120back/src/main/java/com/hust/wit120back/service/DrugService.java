@@ -13,4 +13,6 @@ public interface DrugService {
     int updateDrug(Drug drug);
 
     int deleteDrug(Integer drugId);
+
+    Map<String, Object> getDrugByPageAndDrugName(String drugName, int pageNum, int pageSize);
 }

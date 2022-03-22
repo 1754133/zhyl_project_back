@@ -9,4 +9,5 @@ public class UserDTO {
     private String phone;
     private String code;
     private String token;
+    private int permission;
 }

@@ -20,6 +20,16 @@ public class DocInfoController {
         return Result.success(docInfoService.selectPage(pageNum, pageSize));
     }
 
+    /**
+     * 按名字分页模糊查询
+     * @param
+     * @return
+     */
+    @GetMapping("/page/{doctorName}/{pageNum}/{pageSize}")
+    public Result findPageByName(@PathVariable String doctorName, @PathVariable int pageNum, @PathVariable int pageSize){
+        return Result.success(docInfoService.selectPageByDoctorName(doctorName, pageNum, pageSize));
+    }
+
     @PutMapping
     public Result updateDocInfo(@RequestBody DocInfoDTO docInfoDTO){
         if (docInfoDTO == null || docInfoDTO.getDocInfoId() == null){

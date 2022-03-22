@@ -19,6 +19,21 @@ public class DrugController {
         return Result.success(drugService.getDrugByPage(pageNum, pageSize));
     }
 
+    /**
+     * 根据药品名模糊查询
+     * @param drugName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/page/{drugName}/{pageNum}/{pageSize}")
+    public Result getDrugByPageAndDrugName(@PathVariable String drugName, @PathVariable int pageNum, @PathVariable int pageSize){
+        if (drugName == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(drugService.getDrugByPageAndDrugName(drugName, pageNum, pageSize));
+    }
+
     @PostMapping
     public Result addDrug(@RequestBody Drug drug){
         if (drug.getDrugName() == null){
