@@ -19,7 +19,7 @@ public interface Constants {
     String CODE_403 = "403"; //该科室不存在
     String CODE_404 = "404"; //网页不存在
     String CODE_500 = "500"; //系统错误
-    String CODE_501 = "501"; //该时段挂号名额已满或该医生并未坐诊
+    String CODE_501 = "501"; //该时段名额已满或该医生并未坐诊
     String CODE_502 = "502"; //该用户已预约
     String CODE_503 = "503"; //无坐诊信息
     String CODE_700 = "700"; //其他业务异常

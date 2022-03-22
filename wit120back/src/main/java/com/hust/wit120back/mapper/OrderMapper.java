@@ -56,4 +56,7 @@ public interface OrderMapper {
             @Result(column = "order_time_slice", property = "orderTimeSlice")
     })
     List<OrderDTO> selectOrdersByDocId(Integer doctorId);
+
+    @Select("select order_id from my_order where order_id = #{orderId}")
+    Integer selectOrderId(Integer orderId);
 }

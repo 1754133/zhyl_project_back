@@ -25,4 +25,7 @@ public interface PatientInfoMapper {
 
     @Select("select gender from patient_info where user_id = #{patientId}")
     boolean selectGenderById(Integer patientId);
+
+    @Select("select user_id from patient_info where user_id = #{patientId}")
+    Integer selectPatientId(Integer patientId);
 }
