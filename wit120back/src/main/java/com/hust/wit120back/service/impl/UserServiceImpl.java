@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
         String token = TokenUtils.genToken(user.getUserId().toString(), user.getPassword());
         userDTO.setCode("");
         userDTO.setToken(token);
+        userDTO.setUserId(user.getUserId());
         return userDTO;
     }
 

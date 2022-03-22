@@ -46,4 +46,7 @@ public interface DrugMapper {
             @Result(column = "approval_num", property = "approvalNum")
     })
     List<Drug> selectDrugByPageAndDrugName(String drugName, int pageNum, int pageSize);
+
+    @Select("select drug_name from drug")
+    List<String> selectAllDrugNames();
 }

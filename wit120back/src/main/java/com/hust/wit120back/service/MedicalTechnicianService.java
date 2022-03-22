@@ -16,4 +16,6 @@ public interface MedicalTechnicianService {
     int deleteMedicalTechnicianById(Integer technicianId);
 
     Map<String, Object> getMedicalTechnicianByPageAndTechnicianName(String technicianName, int pageNum, int pageSize);
+
+    List<String> getAllTechnicianName();
 }

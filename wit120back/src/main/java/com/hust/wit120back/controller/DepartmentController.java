@@ -52,8 +52,8 @@ public class DepartmentController {
         return Result.success(departmentService.getDepartmentByPageAndDepartmentName(departmentName, pageNum, pageSize));
     }
 
-    @GetMapping("/description")
-    public Result getDepartmentDesc(@RequestParam Integer departmentId){
+    @GetMapping("/description/{departmentId}")
+    public Result getDepartmentDesc(@PathVariable Integer departmentId){
         //System.out.println("departmentId: " + departmentId);
         DepartmentDTO department = departmentService.getDepartmentsDesc(departmentId);
         //判断一下id是否合法

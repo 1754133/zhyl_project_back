@@ -33,6 +33,11 @@ public class MedicalTechnicianController {
         return Result.success(medicalTechnicianService.getMedicalTechnicianByPageAndTechnicianName(technicianName, pageNum, pageSize));
     }
 
+    @GetMapping("/names")
+    public Result getAllTechnicianName(){
+        return Result.success(medicalTechnicianService.getAllTechnicianName());
+    }
+
     /**
      * 新增医技信息
      * @param medicalTechnicianDTO

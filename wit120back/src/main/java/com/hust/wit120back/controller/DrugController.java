@@ -19,6 +19,11 @@ public class DrugController {
         return Result.success(drugService.getDrugByPage(pageNum, pageSize));
     }
 
+    @GetMapping("/names")
+    public Result getAllDrugNames(){
+        return Result.success(drugService.getAllDrugNames());
+    }
+
     /**
      * 根据药品名模糊查询
      * @param drugName

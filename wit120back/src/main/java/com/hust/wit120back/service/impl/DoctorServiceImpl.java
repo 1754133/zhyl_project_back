@@ -95,9 +95,11 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public boolean addPrescription(Integer orderId, String prescription){
-        if(prescriptionMapper.selectPrescIdByOrderId(orderId) != null)
-            throw new ServiceException(Constants.CODE_700, "预约单对应处方已存在");
-        prescriptionMapper.addPrescription(orderId, prescription);
+        if(prescriptionMapper.selectPrescIdByOrderId(orderId) != null){
+            prescriptionMapper.updatePrescription(orderId, prescription);
+        }else{
+            prescriptionMapper.addPrescription(orderId, prescription);
+        }
         return true;
     }
 

@@ -152,4 +152,13 @@ public class MedicalTechnicianServiceImpl implements MedicalTechnicianService {
         res.put("total", total);
         return res;
     }
+
+    @Override
+    public List<String> getAllTechnicianName() {
+        List<String> technicianNameList = medicalTechnicianMapper.selectAllTechnicianName();
+        if (technicianNameList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "未找到任何医技信息");
+        }
+        return technicianNameList;
+    }
 }

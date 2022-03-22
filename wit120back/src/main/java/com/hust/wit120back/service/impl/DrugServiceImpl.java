@@ -83,4 +83,13 @@ public class DrugServiceImpl implements DrugService {
         res.put("total", total);
         return res;
     }
+
+    @Override
+    public List<String> getAllDrugNames() {
+        List<String> drugNameList = drugMapper.selectAllDrugNames();
+        if (drugNameList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "未找到任何药品");
+        }
+        return drugNameList;
+    }
 }

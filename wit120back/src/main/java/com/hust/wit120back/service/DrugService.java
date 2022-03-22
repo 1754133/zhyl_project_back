@@ -15,4 +15,6 @@ public interface DrugService {
     int deleteDrug(Integer drugId);
 
     Map<String, Object> getDrugByPageAndDrugName(String drugName, int pageNum, int pageSize);
+
+    List<String> getAllDrugNames();
 }

@@ -62,4 +62,7 @@ public interface MedicalTechnicianMapper {
             @Result(column = "doc_id", property = "docId")
     })
     List<MedicalTechnician> selectMedicalTechnicianByPageAndTechnicianName(String technicianName, int pageNum, int pageSize);
+
+    @Select("select technician_name from medical_technician")
+    List<String> selectAllTechnicianName();
 }
