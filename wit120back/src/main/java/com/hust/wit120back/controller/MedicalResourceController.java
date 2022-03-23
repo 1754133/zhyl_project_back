@@ -60,7 +60,7 @@ public class MedicalResourceController {
      * 保存医生推荐的医技预约
      */
     @PostMapping ("/recommend")
-    Result addMedResRecommend(@RequestParam Integer orderId, @RequestParam String recommend){
+    public Result addMedResRecommend(@RequestParam Integer orderId, @RequestParam String recommend){
         if(orderId == null)
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(medicalResourceService.addMedResRecommend(orderId, recommend));
@@ -70,8 +70,17 @@ public class MedicalResourceController {
      * 查询所有的医技资源，返回名称和对应id
      */
     @GetMapping
-    Result getMedResNameAndId(){
+    public Result getMedResNameAndId(){
         return Result.success(medicalResourceService.getMedResNameAndId());
     }
 
+    /**
+     * 查询医技推荐
+     */
+    @GetMapping("/recommend/{orderId}")
+    public Result getMedResRecommend(@PathVariable Integer orderId){
+        if(orderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(medicalResourceService.getMedResRecommend(orderId));
+    }
 }

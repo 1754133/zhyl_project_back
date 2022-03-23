@@ -5,6 +5,7 @@ import com.hust.wit120back.entity.MedicalTechnician;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MedicalTechnicianMapper {
@@ -65,4 +66,17 @@ public interface MedicalTechnicianMapper {
 
     @Select("select technician_name from medical_technician")
     List<String> selectAllTechnicianName();
+
+
+    @Select("select technician_id from medical_technician where technician_name = #{technician}")
+    Integer selectTechnicianName(String technicianName);
+
+    @Select("select technician_name from medical_technician where technician_id = #{technicianId}")
+    String selectTechnicianNameById(Integer technicianId);
+
+    @Select("select cost from medical_technician where technician_name = #{technicianName}")
+    Integer selectCost(String technicianName);
+
+    @Select("select technician_name, technician_id from medical_technician")
+    List<Map<String, Integer>> selectTechniciansNameAndId();
 }

@@ -16,4 +16,7 @@ public interface ResourceRecommendMapper {
     @Select("select order_id from resource_recommend where order_id = #{orderId}")
     Integer selectOrderId(Integer orderId);
 
+    @Select("select resource_recommend from resource_recommend where order_id = #{orderId}")
+    String selectRecommendByOrderId(Integer orderId);
+
 }

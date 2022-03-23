@@ -22,7 +22,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
     private OrderMapper orderMapper;
 
     @Autowired
-    private MedicalResourceMapper medicalResourceMapper;
+    private MedicalTechnicianMapper medicalTechnicianMapper;
 
     @Autowired
     private MedicalResourceOrderMapper medicalResourceOrderMapper;
@@ -36,7 +36,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         Integer patientId = medResOrderDTO.getPatientId();
         Integer orderId = medResOrderDTO.getOrderId();
         String medResName = medResOrderDTO.getMedResName();
-        Integer medResId = medicalResourceMapper.selectMedResName(medResName);
+        Integer medResId = medicalTechnicianMapper.selectTechnicianName(medResName);
         int day = medResOrderDTO.getDay();
         int noon = medResOrderDTO.getNoon();
         int cost = medResOrderDTO.getCost();
@@ -58,9 +58,9 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
 
     @Override
     public void addAppointment(MedResOrderDTO medResOrderDTO){
-        int cost = medicalResourceMapper.selectMedResCost(medResOrderDTO.getMedResName());
+        int cost = medicalTechnicianMapper.selectCost(medResOrderDTO.getMedResName());
         medResOrderDTO.setCost(cost);
-        Integer medResId = medicalResourceMapper.selectMedResName(medResOrderDTO.getMedResName());
+        Integer medResId = medicalTechnicianMapper.selectTechnicianName(medResOrderDTO.getMedResName());
         medResOrderDTO.setMedResId(medResId);
         medicalResourceOrderMapper.addAppointment(medResOrderDTO);
     }
@@ -70,7 +70,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         List<MedResOrderDTO> medResOrders;
         medResOrders = medicalResourceOrderMapper.selectAllMedResOrdersByPatientId(patientId);
         for(MedResOrderDTO medResOrder : medResOrders){
-            medResOrder.setMedResName(medicalResourceMapper.selectMedResNameById(medResOrder.getMedResId()));
+            medResOrder.setMedResName(medicalTechnicianMapper.selectTechnicianNameById(medResOrder.getMedResId()));
         }
         return medResOrders;
     }
@@ -80,7 +80,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         List<MedResOrderDTO> medResOrders;
         medResOrders = medicalResourceOrderMapper.selectMedResOrderByPatientAndOrderId(patientId, orderId);
         for(MedResOrderDTO medResOrder : medResOrders){
-            medResOrder.setMedResName(medicalResourceMapper.selectMedResNameById(medResOrder.getMedResId()));
+            medResOrder.setMedResName(medicalTechnicianMapper.selectTechnicianNameById(medResOrder.getMedResId()));
         }
         return medResOrders;
     }
@@ -97,7 +97,15 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
 
     @Override
     public List<Map<String, Integer>> getMedResNameAndId(){
-        List<Map<String, Integer>> medRes = medicalResourceMapper.selectMedResNameAndId();
+        List<Map<String, Integer>> medRes = medicalTechnicianMapper.selectTechniciansNameAndId();
         return medRes;
+    }
+
+    @Override
+    public String getMedResRecommend(Integer orderId){
+        String recommend = resourceRecommendMapper.selectRecommendByOrderId(orderId);
+        if(StrUtil.isBlank(recommend))
+            throw new ServiceException(Constants.CODE_600, "无医技推荐");
+        return recommend;
     }
 }
