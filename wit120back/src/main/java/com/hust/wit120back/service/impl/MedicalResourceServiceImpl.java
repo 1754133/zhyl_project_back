@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -78,17 +79,27 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         List<MedResOrderDTO> medResOrders;
         medResOrders = medicalResourceOrderMapper.selectAllMedResOrdersByPatientId(patientId);
         for(MedResOrderDTO medResOrder : medResOrders){
+            //设置医技资源的名称
             medResOrder.setMedResName(medicalTechnicianMapper.selectTechnicianNameById(medResOrder.getMedResId()));
+            //设置预约日期
+            String date = TimeUtils.getOrderDate(medResOrder.getCreateTime(), medResOrder.getDay());
+            medResOrder.setOrderTime(date);
         }
+        //sort
+        Collections.sort(medResOrders);
         return medResOrders;
     }
 
     @Override
-    public List<MedResOrderDTO> getMedResAppointment(Integer patientId, Integer orderId){
+    public List<MedResOrderDTO> getMedResAppointmentByOrderId(Integer orderId){
         List<MedResOrderDTO> medResOrders;
-        medResOrders = medicalResourceOrderMapper.selectMedResOrderByPatientAndOrderId(patientId, orderId);
+        medResOrders = medicalResourceOrderMapper.selectMedResOrderByOrderId(orderId);
         for(MedResOrderDTO medResOrder : medResOrders){
+            //设置医技资源的名称
             medResOrder.setMedResName(medicalTechnicianMapper.selectTechnicianNameById(medResOrder.getMedResId()));
+            //设置预约日期
+            String date = TimeUtils.getOrderDate(medResOrder.getCreateTime(), medResOrder.getDay());
+            medResOrder.setOrderTime(date);
         }
         return medResOrders;
     }
@@ -140,9 +151,6 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
                 order.setDeal(true);
             todayMedResOrders.add(order);
         }
-        if(todayMedResOrders.size() == 0)
-            throw new ServiceException(Constants.CODE_600, "无预约订单");
-        //sort
         return todayMedResOrders;
     }
 }

@@ -78,6 +78,10 @@ public interface MedicalTechnicianMapper {
     Integer selectCost(String technicianName);
 
     @Select("select technician_name, technician_id from medical_technician")
+    @Results({
+            @Result(column = "technician_id", property = "technicianId"),
+            @Result(column = "technician_name", property = "technicianName")
+    })
     List<Map<String, Integer>> selectTechniciansNameAndId();
 
     @Select("select technician_id from medical_technician where doc_id = #{doctorId}")

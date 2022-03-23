@@ -97,9 +97,7 @@ public class DoctorServiceImpl implements DoctorService {
                 order.setDeal(true);
             todayOrders.add(order);
         }
-        if(todayOrders.size() == 0)
-            throw new ServiceException(Constants.CODE_600, "无预约订单");
-        //将orders按照预约单创建时间排序
+        //将orders按照预约单预约时间排序
         Collections.sort(todayOrders);
         return todayOrders;
     }

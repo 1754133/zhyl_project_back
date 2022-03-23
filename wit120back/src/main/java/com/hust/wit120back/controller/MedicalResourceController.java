@@ -46,13 +46,13 @@ public class MedicalResourceController {
     }
 
     /**
-     * 查询患者的医技预约单
+     * 查询患者的挂号单对应的医技预约单
      */
-    @GetMapping("/appointment/{patientId}/{orderId}")
-    public Result getMedResAppointment(@PathVariable Integer patientId, @PathVariable Integer orderId){
-        if(patientId == null || orderId == null)
+    @GetMapping("/appointment/order/{orderId}")
+    public Result getMedResAppointmentByOrderId(@PathVariable Integer orderId){
+        if(orderId == null)
             throw new ServiceException(Constants.CODE_400, "参数错误");
-        List<MedResOrderDTO> medResOrders = medicalResourceService.getMedResAppointment(patientId, orderId);
+        List<MedResOrderDTO> medResOrders = medicalResourceService.getMedResAppointmentByOrderId(orderId);
         return Result.success(medResOrders);
     }
 
