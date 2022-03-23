@@ -84,4 +84,7 @@ public interface DocInfoMapper {
 
     @Select("select count(*) from doc_info where doc_name like concat('%',#{doctorName},'%')")
     int selectTotalByDoctorName(String doctorName);
+
+    @Select("select doc_id from doc_info where doc_id = #{doctorId}")
+    Integer selectDoctorId(Integer doctorId);
 }

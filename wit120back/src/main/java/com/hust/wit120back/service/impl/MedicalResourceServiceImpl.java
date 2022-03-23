@@ -7,9 +7,11 @@ import com.hust.wit120back.dto.MedResOrderDTO;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.*;
 import com.hust.wit120back.service.MedicalResourceService;
+import com.hust.wit120back.util.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,12 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
 
     @Autowired
     private ResourceRecommendMapper resourceRecommendMapper;
+
+    @Autowired
+    private DocInfoMapper docInfoMapper;
+
+    @Autowired
+    private CheckResultMapper checkResultMapper;
 
     @Override
     public void checkParameter(MedResOrderDTO medResOrderDTO){
@@ -97,8 +105,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
 
     @Override
     public List<Map<String, Integer>> getMedResNameAndId(){
-        List<Map<String, Integer>> medRes = medicalTechnicianMapper.selectTechniciansNameAndId();
-        return medRes;
+        return medicalTechnicianMapper.selectTechniciansNameAndId();
     }
 
     @Override
@@ -107,5 +114,35 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         if(StrUtil.isBlank(recommend))
             throw new ServiceException(Constants.CODE_600, "无医技推荐");
         return recommend;
+    }
+
+    @Override
+    public List<MedResOrderDTO> getMedResOrderByIdAndDate(Integer doctorId, String date){
+        if(docInfoMapper.selectDoctorId(doctorId) == null)
+            throw new ServiceException(Constants.CODE_600, "不存在该医生");
+        Integer medResId = medicalTechnicianMapper.selectTechnicianIdByDocId(doctorId);
+        String medResName = medicalTechnicianMapper.selectTechnicianNameById(medResId);
+        List<MedResOrderDTO> medResOrders = medicalResourceOrderMapper.selectMedResOrderByMedResId(medResId);
+        List<MedResOrderDTO> todayMedResOrders = new ArrayList<MedResOrderDTO>();
+        for(MedResOrderDTO order : medResOrders){
+            //设置预约日期
+            String orderDate = TimeUtils.getOrderDate(order.getCreateTime(), order.getDay());
+            if(!orderDate.equals(date)) continue;
+            order.setOrderTime(date);
+            //设置医技资源名称
+            order.setMedResName(medResName);
+            //设置患者姓名
+            order.setPatientName(patientInfoMapper.selectRealNameById(order.getPatientId()));
+            //是否处理
+            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(order.getMedResOrderId())))
+                order.setDeal(false);
+            else
+                order.setDeal(true);
+            todayMedResOrders.add(order);
+        }
+        if(todayMedResOrders.size() == 0)
+            throw new ServiceException(Constants.CODE_600, "无预约订单");
+        //sort
+        return todayMedResOrders;
     }
 }

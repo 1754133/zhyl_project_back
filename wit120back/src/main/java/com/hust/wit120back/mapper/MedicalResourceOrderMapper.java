@@ -36,4 +36,15 @@ public interface MedicalResourceOrderMapper {
             @Result(column = "medical_res_id", property = "medResId")
     })
     List<MedResOrderDTO> selectMedResOrderByPatientAndOrderId(Integer patientId, Integer orderId);
+
+    @Select("select med_res_order_id, order_id, patient_id, create_time, day, noon, cost, medical_res_id from medical_resource_order " +
+            "where medical_res_id = #{medResId}")
+    @Results({
+            @Result(column = "med_res_order_id", property = "medResOrderId"),
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "patient_id", property = "patientId"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "medical_res_id", property = "medResId")
+    })
+    List<MedResOrderDTO> selectMedResOrderByMedResId(Integer medResId);
 }

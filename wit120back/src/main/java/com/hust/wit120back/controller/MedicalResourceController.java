@@ -83,4 +83,15 @@ public class MedicalResourceController {
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(medicalResourceService.getMedResRecommend(orderId));
     }
+
+    /**
+     * 医技医生根据日期和自己的id查询某日的医技预约
+     */
+    @GetMapping("/orders/{doctorId}/{date}")
+    public Result getMedResOrderByIdAndDate(@PathVariable Integer doctorId, @PathVariable String date){
+        //date: YYYY-MM-DD
+        if(doctorId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(medicalResourceService.getMedResOrderByIdAndDate(doctorId, date));
+    }
 }
