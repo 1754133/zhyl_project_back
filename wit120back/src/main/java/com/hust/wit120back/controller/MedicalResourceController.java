@@ -65,4 +65,13 @@ public class MedicalResourceController {
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(medicalResourceService.addMedResRecommend(orderId, recommend));
     }
+
+    /**
+     * 查询所有的医技资源，返回名称和对应id
+     */
+    @GetMapping
+    Result getMedResNameAndId(){
+        return Result.success(medicalResourceService.getMedResNameAndId());
+    }
+
 }

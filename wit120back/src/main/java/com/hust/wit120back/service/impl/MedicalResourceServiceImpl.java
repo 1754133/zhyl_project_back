@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MedicalResourceServiceImpl implements MedicalResourceService {
@@ -92,5 +93,11 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             resourceRecommendMapper.updateRecommend(orderId, recommend);
         }
         return true;
+    }
+
+    @Override
+    public List<Map<String, Integer>> getMedResNameAndId(){
+        List<Map<String, Integer>> medRes = medicalResourceMapper.selectMedResNameAndId();
+        return medRes;
     }
 }
