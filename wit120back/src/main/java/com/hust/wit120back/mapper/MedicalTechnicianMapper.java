@@ -67,7 +67,6 @@ public interface MedicalTechnicianMapper {
     @Select("select technician_name from medical_technician")
     List<String> selectAllTechnicianName();
 
-
     @Select("select technician_id from medical_technician where technician_name = #{technician}")
     Integer selectTechnicianName(String technicianName);
 
@@ -86,4 +85,5 @@ public interface MedicalTechnicianMapper {
 
     @Select("select technician_id from medical_technician where doc_id = #{doctorId}")
     Integer selectTechnicianIdByDocId(Integer doctorId);
+
 }

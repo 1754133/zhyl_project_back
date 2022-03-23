@@ -75,6 +75,14 @@ public class DepartmentController {
         return Result.success(shiftInfos);
     }
 
+    @GetMapping("/doc/{departmentId}")
+    public Result getDocInfoByDepartment(@PathVariable Integer departmentId){
+        if (departmentId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.getDocInfoByDepartment(departmentId));
+    }
+
     @GetMapping("/name")
     public Result getDepartmentName(){
         return Result.success(departmentService.getDepartmentName());

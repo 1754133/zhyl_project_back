@@ -142,4 +142,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         return res;
     }
 
+    @Override
+    public List<Map<String, Object>> getDocInfoByDepartment(Integer departmentId) {
+        List<Map<String, Object>> docInfoList = docInfoMapper.selectDocInfoByDepartmentId(departmentId);
+        if (docInfoList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "未找到任何医生信息");
+        }
+        return docInfoList;
+    }
+
 }

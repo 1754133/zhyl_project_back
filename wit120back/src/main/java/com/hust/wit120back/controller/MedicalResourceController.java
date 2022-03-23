@@ -23,6 +23,7 @@ public class MedicalResourceController {
      */
     @PostMapping("/appointment")
     public Result appointment(@RequestBody MedResOrderDTO medResOrderDTO){
+        System.out.println("123");
         //判断参数
         try{
             medicalResourceService.checkParameter(medResOrderDTO);

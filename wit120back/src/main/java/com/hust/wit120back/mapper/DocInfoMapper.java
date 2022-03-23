@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 import javax.print.Doc;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DocInfoMapper {
@@ -85,6 +86,15 @@ public interface DocInfoMapper {
     @Select("select count(*) from doc_info where doc_name like concat('%',#{doctorName},'%')")
     int selectTotalByDoctorName(String doctorName);
 
+
     @Select("select doc_id from doc_info where doc_id = #{doctorId}")
     Integer selectDoctorId(Integer doctorId);
+
+    @Select("select doc_id, doc_name, level from doc_info where department_id=#{departmentId}")
+    @Results({
+            @Result(column = "doc_id", property = "docId"),
+            @Result(column = "doc_name", property = "docName"),
+    })
+    List<Map<String, Object>> selectDocInfoByDepartmentId(Integer departmentId);
+
 }

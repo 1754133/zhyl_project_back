@@ -128,9 +128,11 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public boolean addCaseHistory(Integer orderId, String caseHistory){
-        if(caseHistoryMapper.selectCaseHisIdByOrderId(orderId) != null)
-            throw new ServiceException(Constants.CODE_700, "预约单对应病历已存在");
-        caseHistoryMapper.addCaseHistory(orderId, caseHistory);
+        if(caseHistoryMapper.selectCaseHisIdByOrderId(orderId) != null){
+            caseHistoryMapper.updateCaseHistory(orderId, caseHistory);
+        }else{
+            caseHistoryMapper.addCaseHistory(orderId, caseHistory);
+        }
         return true;
     }
 

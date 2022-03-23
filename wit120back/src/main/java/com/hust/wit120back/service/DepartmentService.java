@@ -25,4 +25,6 @@ public interface DepartmentService {
     boolean deleteDepartment(Integer departmentId);
 
     Map<String, Object> getDepartmentByPageAndDepartmentName(String departmentName, int pageNum, int pageSize);
+
+    List<Map<String, Object>> getDocInfoByDepartment(Integer departmentId);
 }
