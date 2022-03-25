@@ -109,7 +109,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             String date = TimeUtils.getOrderDate(medResOrder.getCreateTime(), medResOrder.getDay());
             medResOrder.setOrderTime(date);
             //是否处理
-            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(orderId)))
+            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(medResOrder.getMedResOrderId())))
                 medResOrder.setDeal(false);
             else
                 medResOrder.setDeal(true);
