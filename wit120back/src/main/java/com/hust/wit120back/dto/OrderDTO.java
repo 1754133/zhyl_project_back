@@ -24,6 +24,8 @@ public class OrderDTO implements Comparable<OrderDTO>{
     public int compareTo(OrderDTO order){
         String date1 = this.orderTime;
         String date2 = order.getOrderTime();
+        int timeSlice1 = this.orderTimeSlice;
+        int timeSlice2 = order.getOrderTimeSlice();
         int year1 = Integer.parseInt(date1.substring(0, 4)), year2 = Integer.parseInt(date2.substring(0, 4));
         int month1 = Integer.parseInt(date1.substring(5, 7)), month2 = Integer.parseInt(date2.substring(5, 7));
         int day1 = Integer.parseInt(date1.substring(8, 10)), day2 = Integer.parseInt(date2.substring(8, 10));
@@ -31,6 +33,8 @@ public class OrderDTO implements Comparable<OrderDTO>{
             return year1 - year2;
         }else if(month1 != month2){
             return month1 - month2;
+        }else if(timeSlice1 != timeSlice2){
+            return timeSlice1 - timeSlice2;
         }
         return day1 - day2;
     }

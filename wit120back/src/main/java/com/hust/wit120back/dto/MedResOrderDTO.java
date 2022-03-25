@@ -35,6 +35,8 @@ public class MedResOrderDTO implements Comparable<MedResOrderDTO>{
             return year1 - year2;
         }else if(month1 != month2){
             return month1 - month2;
+        }else if(this.orderTime != medResOrder.getOrderTime()){
+            return this.noon - medResOrder.getNoon();
         }
         return day1 - day2;
     }
