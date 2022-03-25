@@ -63,7 +63,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         //查询是否已经预约
         if(medicalResourceOrderMapper.selectMedResOrderId(orderId, medResId) != null)
             throw new ServiceException(Constants.CODE_502, "该用户已预约");
-        //是否还有预约名额
+        //是否还有预约名额(每半天拥有12个名额)
         if(medicalResourceOrderMapper.selectOrderNumber(day, noon, medResId) >= 12)
             throw new ServiceException(Constants.CODE_501, "该时段已无预约名额");
     }
@@ -183,5 +183,12 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             throw new ServiceException(Constants.CODE_600, "该医技预约单不存在");
         checkResultMapper.addCheckResult(medResOrderId, checkResult);
         return true;
+    }
+
+    @Override
+    public void deleteAppointment(Integer medResOrderId){
+        if(medicalResourceOrderMapper.selectMedResOrderIdByItself(medResOrderId) == null)
+            throw new ServiceException(Constants.CODE_600, "该医技预约单不存在");
+        medicalResourceOrderMapper.deleteAppointment(medResOrderId);
     }
 }

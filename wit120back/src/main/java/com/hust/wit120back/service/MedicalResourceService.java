@@ -8,6 +8,8 @@ import java.util.Map;
 public interface MedicalResourceService {
     void checkParameter(MedResOrderDTO medResOrderDTO);
     void addAppointment(MedResOrderDTO medResOrderDTO);
+    void deleteAppointment(Integer medResOrderId);
+
     List<MedResOrderDTO> getAllMedResAppointment(Integer patientId);
     List<MedResOrderDTO> getMedResAppointmentByOrderId(Integer orderId);
     boolean addMedResRecommend(Integer orderId, String recommend);

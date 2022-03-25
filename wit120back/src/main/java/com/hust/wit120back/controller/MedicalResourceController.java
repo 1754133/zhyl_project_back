@@ -116,4 +116,15 @@ public class MedicalResourceController {
             return Result.error(Constants.CODE_600, "参数错误");
         return Result.success(medicalResourceService.addCheckResult(medResOrderId, checkResult));
     }
+
+    /**
+     * 删除医技预约
+     */
+    @DeleteMapping("/appointment/{medResOrderId}")
+    public Result deleteMedResAppointment(@PathVariable Integer medResOrderId){
+        if(medResOrderId == null)
+            return Result.error(Constants.CODE_600, "参数错误");
+        medicalResourceService.deleteAppointment(medResOrderId);
+        return Result.success();
+    }
 }

@@ -51,4 +51,7 @@ public interface MedicalResourceOrderMapper {
 
     @Select("select med_res_order_id from medical_resource_order where med_res_order_id = #{medResOrderId}")
     Integer selectMedResOrderIdByItself(Integer medResOrderId);
+
+    @Delete("delete from medical_resource_order where med_res_order_id = #{medResOrderId}")
+    void deleteAppointment(Integer medResOrderId);
 }
