@@ -23,7 +23,6 @@ public class MedicalResourceController {
      */
     @PostMapping("/appointment")
     public Result appointment(@RequestBody MedResOrderDTO medResOrderDTO){
-        System.out.println("123");
         //判断参数
         try{
             medicalResourceService.checkParameter(medResOrderDTO);
@@ -94,5 +93,27 @@ public class MedicalResourceController {
         if(doctorId == null)
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(medicalResourceService.getMedResOrderByIdAndDate(doctorId, date));
+    }
+
+    /**
+     * 查询医技预约检查结果
+     * 参数：医技预约单的id
+     */
+    @GetMapping("/checkResult/{medResId}")
+    public Result getCheckResult(@PathVariable Integer medResOrderId){
+        if(medResOrderId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(medicalResourceService.getCheckResult(medResOrderId));
+    }
+
+    /**
+     * 增加医技检查结果
+     * 传入参数：医技预约单id，检查结果
+     */
+    @PostMapping("/checkResult")
+    public Result addCheckResult(@RequestParam Integer medResOrderId, @RequestParam String checkResult){
+        if(medResOrderId == null)
+            return Result.error(Constants.CODE_600, "参数错误");
+        return Result.success(medicalResourceService.addCheckResult(medResOrderId, checkResult));
     }
 }

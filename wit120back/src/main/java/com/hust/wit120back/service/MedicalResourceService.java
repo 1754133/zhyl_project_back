@@ -14,4 +14,7 @@ public interface MedicalResourceService {
     List<Map<String, Integer>> getMedResNameAndId();
     String getMedResRecommend(Integer orderId);
     List<MedResOrderDTO> getMedResOrderByIdAndDate(Integer doctorId, String date);
+
+    String getCheckResult(Integer medResOrderId);
+    boolean addCheckResult(Integer medResOrderId, String checkResult);
 }

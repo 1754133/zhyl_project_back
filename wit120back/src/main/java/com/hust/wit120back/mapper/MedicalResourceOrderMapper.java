@@ -1,6 +1,7 @@
 package com.hust.wit120back.mapper;
 
 import com.hust.wit120back.dto.MedResOrderDTO;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.InternalRuntimeError;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -47,4 +48,7 @@ public interface MedicalResourceOrderMapper {
             @Result(column = "medical_res_id", property = "medResId")
     })
     List<MedResOrderDTO> selectMedResOrderByMedResId(Integer medResId);
+
+    @Select("select med_res_order_id from medical_resource_order where med_res_order_id = #{medResOrderId}")
+    Integer selectMedResOrderIdByItself(Integer medResOrderId);
 }

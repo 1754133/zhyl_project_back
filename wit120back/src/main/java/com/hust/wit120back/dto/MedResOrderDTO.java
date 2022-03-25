@@ -27,12 +27,10 @@ public class MedResOrderDTO implements Comparable<MedResOrderDTO>{
 
     @Override
     public int compareTo(MedResOrderDTO medResOrder){
-        System.out.println("hhhhhhhhhhhhhhh");
-        String date1 = this.orderTime;
-        String date2 = medResOrder.getOrderTime();
-        int year1 = Integer.parseInt(date1.substring(0, 4)), year2 = Integer.parseInt(date2.substring(0, 4));
-        int month1 = Integer.parseInt(date1.substring(5, 7)), month2 = Integer.parseInt(date2.substring(5, 7));
-        int day1 = Integer.parseInt(date1.substring(8, 10)), day2 = Integer.parseInt(date2.substring(8, 10));
+        String date = medResOrder.getOrderTime();
+        int year1 = Integer.parseInt(this.orderTime.substring(0, 4)), year2 = Integer.parseInt(date.substring(0, 4));
+        int month1 = Integer.parseInt(this.orderTime.substring(5, 7)), month2 = Integer.parseInt(date.substring(5, 7));
+        int day1 = Integer.parseInt(this.orderTime.substring(8, 10)), day2 = Integer.parseInt(date.substring(8, 10));
         if(year1 != year2){
             return year1 - year2;
         }else if(month1 != month2){

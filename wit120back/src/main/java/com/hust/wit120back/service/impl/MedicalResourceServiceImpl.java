@@ -11,6 +11,7 @@ import com.hust.wit120back.util.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RelationSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -152,5 +153,21 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             todayMedResOrders.add(order);
         }
         return todayMedResOrders;
+    }
+
+    @Override
+    public String getCheckResult(Integer medResOrderId){
+        String checkResult = checkResultMapper.selectCheckResultByMedResOrderId(medResOrderId);
+        if(StrUtil.isBlank(checkResult))
+            throw new ServiceException(Constants.CODE_600, "无查询结果");
+        return checkResult;
+    }
+
+    @Override
+    public boolean addCheckResult(Integer medResOrderId, String checkResult){
+        if(medicalResourceOrderMapper.selectMedResOrderIdByItself(medResOrderId) == null)
+            throw new ServiceException(Constants.CODE_600, "该医技预约单不存在");
+        checkResultMapper.addCheckResult(medResOrderId, checkResult);
+        return true;
     }
 }
