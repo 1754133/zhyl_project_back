@@ -37,6 +37,8 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
     @Autowired
     private DocInfoMapper docInfoMapper;
 
+
+
     @Autowired
     private CheckResultMapper checkResultMapper;
 
@@ -141,8 +143,8 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
 
     @Override
     public List<MedResOrderDTO> getMedResOrderByIdAndDate(Integer doctorId, String date){
-        if(docInfoMapper.selectDoctorId(doctorId) == null)
-            throw new ServiceException(Constants.CODE_600, "不存在该医生");
+        /*if(docInfoMapper.selectDoctorId(doctorId) == null)
+            throw new ServiceException(Constants.CODE_600, "不存在该医生");*/
         Integer medResId = medicalTechnicianMapper.selectTechnicianIdByDocId(doctorId);
         String medResName = medicalTechnicianMapper.selectTechnicianNameById(medResId);
         List<MedResOrderDTO> medResOrders = medicalResourceOrderMapper.selectMedResOrderByMedResId(medResId);

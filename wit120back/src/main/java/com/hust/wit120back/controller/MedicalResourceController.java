@@ -99,7 +99,7 @@ public class MedicalResourceController {
      * 查询医技预约检查结果
      * 参数：医技预约单的id
      */
-    @GetMapping("/checkResult/{medResId}")
+    @GetMapping("/checkResult/{medResOrderId}")
     public Result getCheckResult(@PathVariable Integer medResOrderId){
         if(medResOrderId == null)
             return Result.error(Constants.CODE_400, "参数错误");

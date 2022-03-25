@@ -7,10 +7,10 @@ import org.apache.ibatis.annotations.*;
 public interface PatientInfoMapper {
     @Select("select * from patient_info where user_id=#{userId}")
     @Results({
-        @Result(column = "patient_info_id", property = "patientInfoId"),
-        @Result(column = "user_id",property = "userId"),
-            @Result(column = "real_name",property = "realName"),
-            @Result(column = "identification_num",property = "identificationNum")
+            @Result(column = "patient_info_id", property = "patientInfoId"),
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "real_name", property = "realName"),
+            @Result(column = "identification_num", property = "identificationNum")
     })
     PatientInfo selectPatientInfoByUserId(Integer userId);
 

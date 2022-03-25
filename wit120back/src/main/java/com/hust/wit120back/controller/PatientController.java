@@ -37,4 +37,12 @@ public class PatientController {
         }
         return Result.success(patientService.getRealNameByUsername(username));
     }
+
+    @GetMapping("/{patientId}")
+    public Result getPatientInfoByPatientId(@PathVariable Integer patientId){
+        if (patientId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(patientService.getPatientInfoByPatientId(patientId));
+    }
 }

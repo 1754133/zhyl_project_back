@@ -9,4 +9,6 @@ public interface PatientService {
     PatientInfo getPatientInfo(String username);
 
     String getRealNameByUsername(String username);
+
+    PatientInfo getPatientInfoByPatientId(Integer patientId);
 }

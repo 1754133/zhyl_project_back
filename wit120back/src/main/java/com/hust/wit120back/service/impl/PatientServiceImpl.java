@@ -55,4 +55,13 @@ public class PatientServiceImpl implements PatientService {
         }
         return patientInfo.getRealName();
     }
+
+    @Override
+    public PatientInfo getPatientInfoByPatientId(Integer patientId) {
+        PatientInfo patientInfo = patientInfoMapper.selectPatientInfoByUserId(patientId);
+        if (patientInfo == null){
+            throw new ServiceException(Constants.CODE_600, "要查询的患者信息不存在");
+        }
+        return patientInfo;
+    }
 }
