@@ -85,6 +85,11 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             //设置预约日期
             String date = TimeUtils.getOrderDate(medResOrder.getCreateTime(), medResOrder.getDay());
             medResOrder.setOrderTime(date);
+            //是否处理
+            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(medResOrder.getMedResOrderId())))
+                medResOrder.setDeal(false);
+            else
+                medResOrder.setDeal(true);
         }
         //sort
         Collections.sort(medResOrders);
@@ -101,7 +106,13 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             //设置预约日期
             String date = TimeUtils.getOrderDate(medResOrder.getCreateTime(), medResOrder.getDay());
             medResOrder.setOrderTime(date);
+            //是否处理
+            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(orderId)))
+                medResOrder.setDeal(false);
+            else
+                medResOrder.setDeal(true);
         }
+        Collections.sort(medResOrders);
         return medResOrders;
     }
 
@@ -136,22 +147,23 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         String medResName = medicalTechnicianMapper.selectTechnicianNameById(medResId);
         List<MedResOrderDTO> medResOrders = medicalResourceOrderMapper.selectMedResOrderByMedResId(medResId);
         List<MedResOrderDTO> todayMedResOrders = new ArrayList<MedResOrderDTO>();
-        for(MedResOrderDTO order : medResOrders){
+        for(MedResOrderDTO medResOrder : medResOrders){
             //设置预约日期
-            String orderDate = TimeUtils.getOrderDate(order.getCreateTime(), order.getDay());
+            String orderDate = TimeUtils.getOrderDate(medResOrder.getCreateTime(), medResOrder.getDay());
             if(!orderDate.equals(date)) continue;
-            order.setOrderTime(date);
+            medResOrder.setOrderTime(date);
             //设置医技资源名称
-            order.setMedResName(medResName);
+            medResOrder.setMedResName(medResName);
             //设置患者姓名
-            order.setPatientName(patientInfoMapper.selectRealNameById(order.getPatientId()));
+            medResOrder.setPatientName(patientInfoMapper.selectRealNameById(medResOrder.getPatientId()));
             //是否处理
-            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(order.getMedResOrderId())))
-                order.setDeal(false);
+            if(StrUtil.isBlank(checkResultMapper.selectCheckResultByMedResOrderId(medResOrder.getMedResOrderId())))
+                medResOrder.setDeal(false);
             else
-                order.setDeal(true);
-            todayMedResOrders.add(order);
+                medResOrder.setDeal(true);
+            todayMedResOrders.add(medResOrder);
         }
+        Collections.sort(todayMedResOrders);
         return todayMedResOrders;
     }
 
