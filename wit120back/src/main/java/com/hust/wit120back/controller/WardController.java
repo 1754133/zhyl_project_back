@@ -3,6 +3,7 @@ package com.hust.wit120back.controller;
 import cn.hutool.core.util.StrUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
+import com.hust.wit120back.dto.WardInfoDTO;
 import com.hust.wit120back.mapper.WardInfoMapper;
 import com.hust.wit120back.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,17 @@ public class WardController {
     @GetMapping("/emptyWard/{wardId}")
     public Result getEmptyBedByWardId(@PathVariable Integer wardId){
         return Result.success(wardService.getEmptyBedByWardId(wardId));
+    }
+
+    /**
+     * 增加住院记录
+     */
+    @PostMapping("/wardInfo")
+    public Result addPatientWardInfo(@RequestBody WardInfoDTO wardInfoDTO){
+        if(wardInfoDTO.getWardId() == null || wardInfoDTO.getPatientId() == null || wardInfoDTO.getBedId() == null ||
+        wardInfoDTO.getPrincipalId() == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(wardService.addPatientWardInfo(wardInfoDTO));
     }
 
     /**

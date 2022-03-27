@@ -1,8 +1,10 @@
 package com.hust.wit120back.service.impl;
 
 import com.hust.wit120back.common.Constants;
+import com.hust.wit120back.dto.WardInfoDTO;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.CheckRecordMapper;
+import com.hust.wit120back.mapper.PatientInfoMapper;
 import com.hust.wit120back.mapper.WardInfoMapper;
 import com.hust.wit120back.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ public class WardServiceImpl implements WardService {
 
     @Autowired
     private CheckRecordMapper checkRecordMapper;
+
 
     @Override
     public List<Integer> getEmptyWard(){
@@ -45,6 +48,17 @@ public class WardServiceImpl implements WardService {
                 emptyBed.add(i);
         }
         return emptyBed;
+    }
+
+    @Override
+    public boolean addPatientWardInfo(WardInfoDTO wardInfoDTO){
+        //默认前端传入的参数无误
+        Integer wardId = wardInfoDTO.getWardId();
+        Integer bedId = wardInfoDTO.getBedId();
+        Integer patientId = wardInfoDTO.getPatientId();
+        Integer principalId = wardInfoDTO.getPrincipalId();
+        wardInfoMapper.addPatientWardInfo(wardId, bedId, patientId, principalId);
+        return true;
     }
 
     @Override
