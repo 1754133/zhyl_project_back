@@ -1,5 +1,7 @@
 package com.hust.wit120back.service.impl;
 
+import com.hust.wit120back.common.Constants;
+import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.CheckRecordMapper;
 import com.hust.wit120back.mapper.WardInfoMapper;
 import com.hust.wit120back.service.WardService;
@@ -52,5 +54,12 @@ public class WardServiceImpl implements WardService {
         else
             checkRecordMapper.updateCheckResult(patientId, checkRecord);
         return true;
+    }
+
+    @Override
+    public String getCheckRecord(Integer patientId){
+        if(checkRecordMapper.selectPatientIdByItself(patientId) == null)
+            throw new ServiceException(Constants.CODE_600, "该病人无住院记录");
+        return checkRecordMapper.selectCheckRecordByPatientId(patientId);
     }
 }

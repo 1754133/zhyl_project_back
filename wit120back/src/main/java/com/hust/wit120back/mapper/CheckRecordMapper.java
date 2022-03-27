@@ -16,4 +16,7 @@ public interface CheckRecordMapper {
 
     @Update("update check_record set check_record = #{checkResult} where patient_id = #{patientId}")
     void updateCheckResult(Integer patientId, String checkResult);
+
+    @Select("select check_record from check_record where patient_id = #{patientId}")
+    String selectCheckRecordByPatientId(Integer patientId);
 }

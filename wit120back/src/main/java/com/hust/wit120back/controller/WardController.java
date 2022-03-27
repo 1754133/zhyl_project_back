@@ -36,4 +36,14 @@ public class WardController {
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(wardService.addCheckRecord(patientId, checkRecord));
     }
+
+    /**
+     * 查询查房记录
+     */
+    @GetMapping("/checkRecord/{patientId}")
+    public Result getCheckRecord(@PathVariable Integer patientId){
+        if(patientId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(wardService.getCheckRecord(patientId));
+    }
 }
