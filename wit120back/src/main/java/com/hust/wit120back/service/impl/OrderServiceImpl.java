@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
         //参数错误
         if(StrUtil.isBlank(username) || doctorId == null)
             throw new ServiceException(Constants.CODE_400, "参数错误");
-        if((orderDay < 1 || orderDay > 7) || (orderTimeSlice < 1 || orderTimeSlice > 6) || cost <= 0)
+        if((orderDay < 0 || orderDay > 6) || (orderTimeSlice < 1 || orderTimeSlice > 6) || cost <= 0)
             throw new ServiceException(Constants.CODE_400, "参数错误");
         Integer patientId = userMapper.selectPatientIdByName(username);
         //查询该时段该用户是否已经预约
