@@ -3,6 +3,7 @@ package com.hust.wit120back.service;
 import com.hust.wit120back.dto.WardInfoDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WardService {
     List<Integer> getEmptyWard();
@@ -13,4 +14,6 @@ public interface WardService {
 
     boolean addCheckRecord(Integer patientId, String checkRecord);
     String getCheckRecord(Integer patientId);
+
+    Map<Integer, Integer> systemRecommendWard();
 }

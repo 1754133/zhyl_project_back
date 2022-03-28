@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.ConstantCallSite;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ward")
@@ -77,6 +78,17 @@ public class WardController {
         if(patientId == null)
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(wardService.deleteWardInfo(patientId));
+    }
+
+    /**
+     * 系统推荐入院，返回推荐的病房号和病床号
+     */
+    @GetMapping("/systemRecommend")
+    public Result systemRecommendWard(){
+        Map<Integer, Integer> recommend = wardService.systemRecommendWard();
+        if(recommend.isEmpty())
+            return Result.error(Constants.CODE_600, "无剩余床位");
+        return Result.success(recommend);
     }
 
 }

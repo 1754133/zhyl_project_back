@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("WardService")
 public class WardServiceImpl implements WardService {
@@ -99,5 +101,26 @@ public class WardServiceImpl implements WardService {
     @Override
     public boolean deleteWardInfo(Integer patientId){
         return wardInfoMapper.deleteWardInfoByPatientId(patientId) && checkRecordMapper.deleteCheckRecordByPatientId(patientId);
+    }
+
+    @Override
+    public Map<Integer, Integer> systemRecommendWard(){
+        int floor = 2; //楼层为2
+        Map<Integer, Integer> recommend = new HashMap<>();
+        for(int i = 1; i <= floor; i++){
+            for(int id = i * 100 + 1; id <= i * 100 + 20; id++){
+                int num = wardInfoMapper.selectWardNumByWardId(id);
+                if(num >= 0 && num < 4){
+                    //有空床
+                    for(int bed = 1; bed <= 4; bed++){
+                        if(wardInfoMapper.selectBedByWardAndBedId(id, bed) == null){
+                            recommend.put(id, bed);
+                            return recommend;
+                        }
+                    }
+                }
+            }
+        }
+        return recommend;
     }
 }
