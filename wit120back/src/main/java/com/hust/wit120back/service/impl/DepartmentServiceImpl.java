@@ -7,6 +7,7 @@ import com.hust.wit120back.dto.ShiftInfoDTO;
 
 import com.hust.wit120back.entity.Department;
 
+import com.hust.wit120back.entity.DocInfo;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.DepartmentMapper;
 import com.hust.wit120back.mapper.DocInfoMapper;
@@ -16,6 +17,7 @@ import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -188,6 +190,24 @@ public class DepartmentServiceImpl implements DepartmentService {
         res.put("tableList", departmentShift);
         res.put("total", total);
         return res;
+    }
+
+    @Override
+    public List<DocInfo> getNoShiftDoctorByDepartmentId(Integer departmentId) {
+        //根据科室ID查询医生信息
+        List<DocInfo> docInfoList = docInfoMapper.selectDocInfoListByDepartment(departmentId);
+        if (docInfoList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "该科室不存在医生信息");
+        }
+        //查询坐班表中的所有医生ID
+        List<Integer> shiftDocIdList = doctorMapper.getDocIdList();
+        if (shiftDocIdList.size() != 0){
+            docInfoList.removeIf(docInfo -> shiftDocIdList.contains(docInfo.getDocId()));
+        }
+        if (docInfoList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "该科室不存在未安排坐诊的医生");
+        }
+        return docInfoList;
     }
 
 }

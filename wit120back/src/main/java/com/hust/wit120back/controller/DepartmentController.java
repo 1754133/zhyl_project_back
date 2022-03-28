@@ -86,6 +86,19 @@ public class DepartmentController {
         return Result.success(departmentService.getShiftNumByPage(pageNum, pageSize));
     }
 
+    /**
+     * 查询该科室未安排坐诊的所有医生信息
+     * @param departmentId
+     * @return
+     */
+    @GetMapping("/shift/doctorName/{departmentId}")
+    public Result getNoShiftDoctorByDepartmentId(@PathVariable Integer departmentId){
+        if (departmentId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.getNoShiftDoctorByDepartmentId(departmentId));
+    }
+
     @GetMapping("/doc/{departmentId}")
     public Result getDocInfoByDepartment(@PathVariable Integer departmentId){
         if (departmentId == null){

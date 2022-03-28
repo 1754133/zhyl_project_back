@@ -1,5 +1,7 @@
 package com.hust.wit120back.mapper;
 
+import com.hust.wit120back.dto.ConciseShiftInfoDTO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -14,6 +16,5 @@ public interface DoctorShiftInfoMapper {
 
     @Update("update doctor_shift_info set patients_number = patients_number - 1 where doctor_id = #{doctorId} and day = #{orderDay} and time_slice = #{orderTimeSlice}")
     void deletePatientNumber(Integer doctorId, int orderDay, int orderTimeSlice);
-
 
 }

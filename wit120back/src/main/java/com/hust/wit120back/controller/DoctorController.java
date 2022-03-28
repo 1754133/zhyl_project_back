@@ -30,6 +30,15 @@ public class DoctorController {
         return Result.success(shiftInfos);
     }
 
+    @PostMapping("/ShiftInfo")
+    public Result addShiftInfo(@RequestBody ConciseShiftInfoDTO conciseShiftInfoDTO){
+        Integer doctorId = conciseShiftInfoDTO.getDoctorId();
+        if (doctorId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(doctorService.addShiftInfo(conciseShiftInfoDTO));
+    }
+
     @GetMapping("/shiftInfo/{doctorId}")
     public Result getShiftInfo(@PathVariable Integer doctorId){
         ArrayList<ShiftInfoDTO> shiftInfos;

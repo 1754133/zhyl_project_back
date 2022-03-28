@@ -2,10 +2,7 @@ package com.hust.wit120back.mapper;
 
 import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +12,10 @@ public interface DoctorMapper {
     @Select("select doctor_id, day, noon from doctor_concise_shift_info where doctor_id = #{doctorId}")
     @Result(column = "doctor_id", property = "doctorId")
     ArrayList<ConciseShiftInfoDTO> selectDocConciseShiftInfoById(Integer doctorId);
+
+    @Select("select doctor_id, day, noon from doctor_concise_shift_info where doctor_id=#{doctorId} and day=#{day} and noon=#{noon}")
+    @Result(column = "doctor_id", property = "doctorId")
+    ConciseShiftInfoDTO selectConciseShiftInfoByDoctorIdAndDayAndNoon(ConciseShiftInfoDTO conciseShiftInfoDTO);
 
     @Select("select doctor_id, day, time_slice from doctor_shift_info where doctor_id = #{doctorId}")
     @Results({
@@ -40,4 +41,10 @@ public interface DoctorMapper {
 
     @Select("select distinct doctor_id from doctor_concise_shift_info")
     List<Integer> getDocIdList();
+
+    @Insert("insert into doctor_concise_shift_info(doctor_id, day, noon) values(#{doctorId}, #{day}, #{noon})")
+    void addConciseShiftInfo(ConciseShiftInfoDTO conciseShiftInfoDTO);
+
+    @Insert("insert into doctor_shift_info(doctor_id, day, time_slice, patients_number) values(#{doctorId}, #{day}, #{timeSlice}, #{patientNumber})")
+    void addShiftInfo(Integer doctorId, int day, int timeSlice, int patientNumber);
 }

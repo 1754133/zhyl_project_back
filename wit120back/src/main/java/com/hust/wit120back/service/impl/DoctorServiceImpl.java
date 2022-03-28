@@ -149,4 +149,31 @@ public class DoctorServiceImpl implements DoctorService {
             throw new ServiceException(Constants.CODE_600, "无对应病历");
         return caseHistoryMapper.updateCaseHistory(orderId, caseHistory);
     }
+
+    @Override
+    public boolean addShiftInfo(ConciseShiftInfoDTO conciseShiftInfoDTO) {
+        int day = conciseShiftInfoDTO.getDay();
+        if (day < 0 || day > 6){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        int noon = conciseShiftInfoDTO.getNoon();
+        if (noon < 1 || noon > 2){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        ConciseShiftInfoDTO conciseShiftInfoDTO1 = doctorMapper.selectConciseShiftInfoByDoctorIdAndDayAndNoon(conciseShiftInfoDTO);
+        if (conciseShiftInfoDTO1 != null){
+            throw new ServiceException(Constants.CODE_700, "坐诊信息重复，添加失败");
+        }
+        doctorMapper.addConciseShiftInfo(conciseShiftInfoDTO);
+        if (conciseShiftInfoDTO.getNoon() == 1){
+            for (int i = 1; i < 4; i++){
+                doctorMapper.addShiftInfo(conciseShiftInfoDTO.getDoctorId(), conciseShiftInfoDTO.getDay(), i, 0);
+            }
+        }else{
+            for (int i = 4; i < 7; i++){
+                doctorMapper.addShiftInfo(conciseShiftInfoDTO.getDoctorId(), conciseShiftInfoDTO.getDay(), i, 0);
+            }
+        }
+        return true;
+    }
 }
