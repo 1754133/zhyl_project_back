@@ -32,7 +32,7 @@ public class OrderController {
         try{
             orderService.checkParameter(orderDTO);
         }catch (ServiceException e){
-            return Result.success(e);
+            return Result.error(Constants.CODE_400, "参数错误");
         }
         //医生值班信息表中增加挂号人数
         orderService.addPatient(orderDTO.getDoctorId(), orderDTO.getOrderDay(), orderDTO.getOrderTimeSlice());

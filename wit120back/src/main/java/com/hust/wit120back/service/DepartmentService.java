@@ -27,4 +27,6 @@ public interface DepartmentService {
     Map<String, Object> getDepartmentByPageAndDepartmentName(String departmentName, int pageNum, int pageSize);
 
     List<Map<String, Object>> getDocInfoByDepartment(Integer departmentId);
+
+    Map<String, Object> getShiftNumByPage(int pageNum, int pageSize);
 }

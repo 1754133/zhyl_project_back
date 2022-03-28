@@ -55,6 +55,10 @@ public class WardServiceImpl implements WardService {
 
     @Override
     public boolean addPatientWardInfo(WardInfoDTO wardInfoDTO){
+        //判断数据库中是否已存在该住院信息
+        if (wardInfoMapper.selectWardInfoByPatientId(wardInfoDTO.getPatientId()) != null){
+            throw new ServiceException(Constants.CODE_700, "该患者已经住院");
+        }
         //默认前端传入的参数无误
         Integer wardId = wardInfoDTO.getWardId();
         Integer bedId = wardInfoDTO.getBedId();

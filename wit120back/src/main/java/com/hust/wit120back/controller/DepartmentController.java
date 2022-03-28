@@ -75,6 +75,17 @@ public class DepartmentController {
         return Result.success(shiftInfos);
     }
 
+    /**
+     * 分页查询每个科室的总医生人数和未排班医生人数
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/shift/{pageNum}/{pageSize}")
+    public Result getShiftNumByPage(@PathVariable int pageNum, @PathVariable int pageSize){
+        return Result.success(departmentService.getShiftNumByPage(pageNum, pageSize));
+    }
+
     @GetMapping("/doc/{departmentId}")
     public Result getDocInfoByDepartment(@PathVariable Integer departmentId){
         if (departmentId == null){

@@ -37,4 +37,7 @@ public interface DoctorMapper {
             @Result(column = "patients_number", property = "patientsNumber")
     })
     List<ShiftInfoDTO> selectDocShiftInfoByIdAndDayAndAft(Integer doctorId, int orderDay);
+
+    @Select("select distinct doctor_id from doctor_concise_shift_info")
+    List<Integer> getDocIdList();
 }
