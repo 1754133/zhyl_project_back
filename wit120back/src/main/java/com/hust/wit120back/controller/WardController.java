@@ -29,6 +29,16 @@ public class WardController {
     }
 
     /**
+     * 查看医生所负责的病人的住院记录
+     */
+    @GetMapping("/patientInfo/{doctorId}")
+    public Result getPatientInfo(@PathVariable Integer doctorId){
+        if(doctorId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(wardService.getPatientInfo(doctorId));
+    }
+
+    /**
      * 增加住院记录
      */
     @PostMapping("/wardInfo")
@@ -58,4 +68,15 @@ public class WardController {
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(wardService.getCheckRecord(patientId));
     }
+
+    /**
+     * 病人出院，删除其住院信息、查房记录
+     */
+    @DeleteMapping("/wardInfo/{patientId}")
+    public Result deleteWardInfo(@PathVariable Integer patientId){
+        if(patientId == null)
+            return Result.error(Constants.CODE_400, "参数错误");
+        return Result.success(wardService.deleteWardInfo(patientId));
+    }
+
 }

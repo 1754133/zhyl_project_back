@@ -1,9 +1,6 @@
 package com.hust.wit120back.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper
@@ -19,4 +16,7 @@ public interface CheckRecordMapper {
 
     @Select("select check_record from check_record where patient_id = #{patientId}")
     String selectCheckRecordByPatientId(Integer patientId);
+
+    @Delete("delete from check_record where patient_id = #{patientId}")
+    boolean deleteCheckRecordByPatientId(Integer patientId);
 }

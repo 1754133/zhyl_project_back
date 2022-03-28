@@ -28,4 +28,7 @@ public interface PatientInfoMapper {
 
     @Select("select user_id from patient_info where user_id = #{patientId}")
     Integer selectPatientId(Integer patientId);
+
+    @Select("select age from patient_info where user_id = #{patientId}")
+    int selectAgeByPatientId(Integer patientId);
 }

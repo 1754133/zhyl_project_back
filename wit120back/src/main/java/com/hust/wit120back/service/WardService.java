@@ -8,6 +8,8 @@ public interface WardService {
     List<Integer> getEmptyWard();
     List<Integer> getEmptyBedByWardId(Integer wardId);
     boolean addPatientWardInfo(WardInfoDTO wardInfoDTO);
+    List<WardInfoDTO> getPatientInfo(Integer doctorId);
+    boolean deleteWardInfo(Integer patientId);
 
     boolean addCheckRecord(Integer patientId, String checkRecord);
     String getCheckRecord(Integer patientId);

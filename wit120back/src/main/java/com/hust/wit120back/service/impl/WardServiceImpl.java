@@ -21,6 +21,9 @@ public class WardServiceImpl implements WardService {
     @Autowired
     private CheckRecordMapper checkRecordMapper;
 
+    @Autowired
+    private PatientInfoMapper patientInfoMapper;
+
 
     @Override
     public List<Integer> getEmptyWard(){
@@ -62,6 +65,18 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
+    public List<WardInfoDTO> getPatientInfo(Integer doctorId){
+        List<WardInfoDTO> patientInfos = wardInfoMapper.selectPatientWardInfoByDoctorId(doctorId);
+        for(WardInfoDTO patientInfo : patientInfos){
+            //设置病人姓名、性别、年龄
+            patientInfo.setPatientName(patientInfoMapper.selectRealNameById(patientInfo.getPatientId()));
+            patientInfo.setGender(patientInfoMapper.selectGenderById(patientInfo.getPatientId()));
+            patientInfo.setAge(patientInfoMapper.selectAgeByPatientId(patientInfo.getPatientId()));
+        }
+        return patientInfos;
+    }
+
+    @Override
     public boolean addCheckRecord(Integer patientId, String checkRecord){
         if(checkRecordMapper.selectPatientIdByItself(patientId) == null)
             checkRecordMapper.addCheckResult(patientId, checkRecord);
@@ -75,5 +90,10 @@ public class WardServiceImpl implements WardService {
         if(checkRecordMapper.selectPatientIdByItself(patientId) == null)
             throw new ServiceException(Constants.CODE_600, "该病人无住院记录");
         return checkRecordMapper.selectCheckRecordByPatientId(patientId);
+    }
+
+    @Override
+    public boolean deleteWardInfo(Integer patientId){
+        return wardInfoMapper.deleteWardInfoByPatientId(patientId) && checkRecordMapper.deleteCheckRecordByPatientId(patientId);
     }
 }
