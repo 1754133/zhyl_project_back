@@ -25,6 +25,15 @@ public interface DoctorMapper {
     })
     ArrayList<ShiftInfoDTO> selectDocShiftInfoById(Integer doctorId);
 
+    @Select("select * from doctor_shift_info where doctor_id=#{doctorId} and day=#{orderDay} and time_slice=#{orderTimeSlice}")
+    @Results({
+            @Result(column = "doctor_id", property = "doctorId"),
+            @Result(column = "day", property = "orderDay"),
+            @Result(column = "time_slice", property = "orderTimeSlice"),
+            @Result(column = "patients_number", property = "patientsNumber")
+    })
+    ShiftInfoDTO selectShiftInfoByDoctorIdAndDayAndNoon(Integer doctorId, int orderDay, int orderTimeSlice);
+
     @Select("select time_slice, patients_number from doctor_shift_info where doctor_id=#{doctorId} and day=#{orderDay} and time_slice<=3")
     @Results({
             @Result(column = "time_slice", property = "orderTimeSlice"),
@@ -47,4 +56,10 @@ public interface DoctorMapper {
 
     @Insert("insert into doctor_shift_info(doctor_id, day, time_slice, patients_number) values(#{doctorId}, #{day}, #{timeSlice}, #{patientNumber})")
     void addShiftInfo(Integer doctorId, int day, int timeSlice, int patientNumber);
+
+    @Delete("delete from doctor_shift_info where doctor_id=#{doctorId} and day=#{orderDay} and time_slice=#{timeSlice}")
+    void deleteShiftInfo(Integer doctorId, int orderDay, int timeSlice);
+
+    @Delete("delete from doctor_concise_shift_info where doctor_id=#{doctorId} and day=#{day} and noon=#{noon}")
+    void deleteConciseShiftInfo(Integer doctorId, int day, int noon);
 }

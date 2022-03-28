@@ -32,4 +32,6 @@ public interface DepartmentService {
     Map<String, Object> getShiftNumByPage(int pageNum, int pageSize);
 
     List<DocInfo> getNoShiftDoctorByDepartmentId(Integer departmentId);
+
+    Map<String, Object> getShiftNumByPageAndName(String departmentName, int pageNum, int pageSize);
 }

@@ -20,4 +20,6 @@ public interface DoctorService {
     int updateCaseHistory(Integer orderId, String caseHistory);
 
     boolean addShiftInfo(ConciseShiftInfoDTO conciseShiftInfoDTO);
+
+    boolean deleteShiftInfo(Integer doctorId, int day, int noon);
 }

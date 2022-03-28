@@ -210,4 +210,39 @@ public class DepartmentServiceImpl implements DepartmentService {
         return docInfoList;
     }
 
+    @Override
+    public Map<String, Object> getShiftNumByPageAndName(String departmentName, int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int total = departmentMapper.selectTotalByDepartmentName(departmentName);
+        if (total == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何科室信息");
+        }
+        List<Department> departmentList = departmentMapper.selectDepartmentByPageAndDepartmentName(departmentName, pageNum, pageSize);
+        List<Map<String, Object>> departmentShift = new ArrayList<>();
+        List<Integer> shiftDocIdList = doctorMapper.getDocIdList();
+        for (Department department : departmentList){
+            List<Integer> doctorIdList = departmentMapper.selectDoctorIdByDepartmentId(department.getDepartmentId());
+            int doctorNum = doctorIdList.size();
+            int noShiftNum = 0;
+            for (Integer doctorId : doctorIdList){
+                if (!shiftDocIdList.contains(doctorId)){
+                    noShiftNum = noShiftNum + 1;
+                }
+            }
+            Map<String, Object> res1 = new HashMap<>();
+            res1.put("departmentId", department.getDepartmentId());
+            res1.put("departmentName", department.getDepartmentName());
+            res1.put("doctorNum", doctorNum);
+            res1.put("noShiftNum", noShiftNum);
+            departmentShift.add(res1);
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", departmentShift);
+        res.put("total", total);
+        return res;
+    }
+
 }

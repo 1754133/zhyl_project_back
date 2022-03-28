@@ -10,6 +10,7 @@ import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.*;
 import com.hust.wit120back.service.DoctorService;
 import com.hust.wit120back.util.TimeUtils;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -174,6 +175,57 @@ public class DoctorServiceImpl implements DoctorService {
                 doctorMapper.addShiftInfo(conciseShiftInfoDTO.getDoctorId(), conciseShiftInfoDTO.getDay(), i, 0);
             }
         }
+        return true;
+    }
+
+    @Override
+    public boolean deleteShiftInfo(Integer doctorId, int day, int noon) {
+        if (day < 0 || day > 6 || noon < 1 || noon > 2){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        ConciseShiftInfoDTO conciseShiftInfoDTO = new ConciseShiftInfoDTO();
+        conciseShiftInfoDTO.setDoctorId(doctorId);
+        conciseShiftInfoDTO.setDay(day);
+        conciseShiftInfoDTO.setNoon(noon);
+        //判断删除的粗略信息是否不存在
+        ConciseShiftInfoDTO conciseShiftInfoDTO1 = doctorMapper.selectConciseShiftInfoByDoctorIdAndDayAndNoon(conciseShiftInfoDTO);
+        if (conciseShiftInfoDTO1 == null){
+            throw new ServiceException(Constants.CODE_600, "要删除的坐诊信息不存在");
+        }
+        //判断删除的详细表信息是否能删除
+        if (noon == 1){
+            for (int i = 1; i < 4; i++){
+                ShiftInfoDTO shiftInfoDTO = doctorMapper.selectShiftInfoByDoctorIdAndDayAndNoon(doctorId, day, i);
+                if (shiftInfoDTO == null){
+                    throw new ServiceException(Constants.CODE_600, "要删除的详细坐诊信息不存在");
+                }
+                if (shiftInfoDTO.getPatientsNumber() != 0){
+                    throw new ServiceException(Constants.CODE_700, "该医生该时段已有患者预约，删除失败");
+                }
+            }
+        }else{
+            for (int i = 4; i < 7; i++){
+                ShiftInfoDTO shiftInfoDTO = doctorMapper.selectShiftInfoByDoctorIdAndDayAndNoon(doctorId, day, i);
+                if (shiftInfoDTO == null){
+                    throw new ServiceException(Constants.CODE_600, "要删除的详细坐诊信息不存在");
+                }
+                if (shiftInfoDTO.getPatientsNumber() != 0){
+                    throw new ServiceException(Constants.CODE_700, "该医生该时段已有患者预约，删除失败");
+                }
+            }
+        }
+        //删除详细表中的信息
+        if (noon == 1){
+            for (int i = 1; i < 4; i++){
+                doctorMapper.deleteShiftInfo(doctorId, day, i);
+            }
+        }else{
+            for (int i = 4; i < 7; i++){
+                doctorMapper.deleteShiftInfo(doctorId, day, i);
+            }
+        }
+        //删除粗略表中的信息
+        doctorMapper.deleteConciseShiftInfo(doctorId, day, noon);
         return true;
     }
 }

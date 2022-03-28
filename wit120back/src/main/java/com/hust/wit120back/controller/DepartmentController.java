@@ -87,6 +87,21 @@ public class DepartmentController {
     }
 
     /**
+     * 分页加根据科室名模糊查询科室的总医生人数和未排班医生人数
+     * @param departmentName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/shift/{departmentName}/{pageNum}/{pageSize}")
+    public Result getShiftNumByPageAndName(@PathVariable String departmentName, @PathVariable int pageNum, @PathVariable int pageSize){
+        if (departmentName == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(departmentService.getShiftNumByPageAndName(departmentName, pageNum, pageSize));
+    }
+
+    /**
      * 查询该科室未安排坐诊的所有医生信息
      * @param departmentId
      * @return

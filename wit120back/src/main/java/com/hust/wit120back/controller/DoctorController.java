@@ -30,13 +30,33 @@ public class DoctorController {
         return Result.success(shiftInfos);
     }
 
-    @PostMapping("/ShiftInfo")
+    /**
+     * 新增排班信息
+     * @param conciseShiftInfoDTO
+     * @return
+     */
+    @PostMapping("/shiftInfo")
     public Result addShiftInfo(@RequestBody ConciseShiftInfoDTO conciseShiftInfoDTO){
         Integer doctorId = conciseShiftInfoDTO.getDoctorId();
         if (doctorId == null){
             return Result.error(Constants.CODE_400, "参数错误");
         }
         return Result.success(doctorService.addShiftInfo(conciseShiftInfoDTO));
+    }
+
+    /**
+     * 删除坐诊信息
+     * @param doctorId
+     * @param day
+     * @param noon
+     * @return
+     */
+    @DeleteMapping("/shiftInfo/{doctorId}/{day}/{noon}")
+    public Result deleteShiftInfo(@PathVariable Integer doctorId, @PathVariable int day, @PathVariable int noon){
+        if (doctorId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(doctorService.deleteShiftInfo(doctorId, day, noon));
     }
 
     @GetMapping("/shiftInfo/{doctorId}")
