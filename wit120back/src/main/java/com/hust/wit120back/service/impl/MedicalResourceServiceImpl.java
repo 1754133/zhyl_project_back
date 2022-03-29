@@ -48,7 +48,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         Integer patientId = medResOrderDTO.getPatientId();
         Integer orderId = medResOrderDTO.getOrderId();
         String medResName = medResOrderDTO.getMedResName();
-        Integer medResId = medicalTechnicianMapper.selectTechnicianName(medResName);
+        Integer medResId = medicalTechnicianMapper.selectTechnicianIdByName(medResName);
         int day = medResOrderDTO.getDay();
         int noon = medResOrderDTO.getNoon();
         int cost = medResOrderDTO.getCost();
@@ -72,7 +72,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
     public void addAppointment(MedResOrderDTO medResOrderDTO){
         int cost = medicalTechnicianMapper.selectCost(medResOrderDTO.getMedResName());
         medResOrderDTO.setCost(cost);
-        Integer medResId = medicalTechnicianMapper.selectTechnicianName(medResOrderDTO.getMedResName());
+        Integer medResId = medicalTechnicianMapper.selectTechnicianIdByName(medResOrderDTO.getMedResName());
         medResOrderDTO.setMedResId(medResId);
         medicalResourceOrderMapper.addAppointment(medResOrderDTO);
     }
@@ -190,5 +190,55 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         if(medicalResourceOrderMapper.selectMedResOrderIdByItself(medResOrderId) == null)
             throw new ServiceException(Constants.CODE_600, "该医技预约单不存在");
         medicalResourceOrderMapper.deleteAppointment(medResOrderId);
+    }
+
+    @Override
+    public List<String> automaticAppointment(Integer orderId, Integer patientId, String createTime){
+        //判断该日期是周几
+        int today = TimeUtils.getWhatDay(createTime);
+        //System.out.println("Today is: " + today);
+        //取得需要预约的医技资源名称
+        String recommend = resourceRecommendMapper.selectRecommendByOrderId(orderId);
+        String[] recommends = recommend.split("；");
+        for(String r : recommends)
+            System.out.println("---" + r + "---");
+        List<Integer> medResIds = new ArrayList<Integer>();
+        //根据名称取得id
+        for(int i = 0; i < recommends.length; i++)
+            medResIds.add(medicalTechnicianMapper.selectTechnicianIdByName(recommends[i]));;
+        //从该日上午开始预约，尝试预约七天内的某一名额
+        for(int i = 0; i < 7; i++){
+            String nxtDate = TimeUtils.calDate(createTime, i); //日期
+            int nxtDay = (today + i) % 7; //周几
+            for(int noon = 1; noon <= 2; noon++){
+                //半天内的预约名额
+                for(int j = 0; j < medResIds.size(); j++){
+                    System.out.println("day: " + i + ", the " + j + "th recommend: " + recommends[j]);
+                    //查找已经预约的数量
+                    Integer num = medicalResourceOrderMapper.selectOrderNumByMedResIdAndDate(medResIds.get(j), nxtDate, noon);
+                    if(num == null) num = 0;
+                    if(num >= 0 && num < 12){
+                        //该半天内仍有名额，预约，需要的参数：orderId, patientId, day, noon, cost, medical_res_id
+                        MedResOrderDTO medResOrderDTO = new MedResOrderDTO();
+                        medResOrderDTO.setOrderId(orderId);
+                        medResOrderDTO.setPatientId(patientId);
+                        medResOrderDTO.setDay(nxtDay);
+                        medResOrderDTO.setNoon(noon);
+                        medResOrderDTO.setCost(medicalTechnicianMapper.selectCostByMedResId(medResIds.get(j)));
+                        medResOrderDTO.setMedResId(medResIds.get(j));
+                        //预约
+                        medicalResourceOrderMapper.addAppointment(medResOrderDTO);
+                        //从数组中删掉该元素
+                        medResIds.remove(medResIds.get(j));
+                        j--;
+                    }
+                }
+            }
+        }
+        List<String> failList = new ArrayList<String>();
+        for(Integer id : medResIds){
+            failList.add(medicalTechnicianMapper.selectTechnicianNameById(id));
+        }
+        return failList;
     }
 }

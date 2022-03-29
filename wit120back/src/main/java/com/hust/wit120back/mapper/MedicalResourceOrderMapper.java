@@ -54,4 +54,7 @@ public interface MedicalResourceOrderMapper {
 
     @Delete("delete from medical_resource_order where med_res_order_id = #{medResOrderId}")
     void deleteAppointment(Integer medResOrderId);
+
+    @Select("select * from medical_resource_order where medical_res_id = #{medResId} and noon = #{noon} and create_time like concat(#{date},'%')")
+    Integer selectOrderNumByMedResIdAndDate(Integer medResId, String date, int noon);
 }

@@ -83,7 +83,7 @@ public class TimeUtils {
     }
 
     /**
-     *
+     * 计算预约日期
      */
     public static String getOrderDate(String createDate, int orderDay){
         Calendar cal = Calendar.getInstance();
@@ -100,5 +100,22 @@ public class TimeUtils {
         if(orderDay == 0) orderDay = 7;
         String orderDate = calDate(createDate, (orderDay + 7 - createDay) % 7);
         return orderDate;
+    }
+
+    /**
+     * 计算周几
+     */
+    public static int getWhatDay(String date){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = null;
+        try{
+            d = f.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        cal.setTime(d);
+        int today = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        return today;
     }
 }

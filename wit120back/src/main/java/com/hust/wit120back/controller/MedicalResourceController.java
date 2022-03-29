@@ -127,4 +127,15 @@ public class MedicalResourceController {
         medicalResourceService.deleteAppointment(medResOrderId);
         return Result.success();
     }
+
+    /**
+     * 医技自动预约，返回不成功的预约
+     * medResOrderDTO:传入orderId,patientID,createTime,
+     */
+    @PostMapping("/appointment/system")
+    public Result automaticAppointment(@RequestParam Integer orderId, @RequestParam Integer patientId, @RequestParam String createTime){
+        if(orderId == null || patientId == null)
+            return Result.error(Constants.CODE_600, "参数错误");
+        return Result.success(medicalResourceService.automaticAppointment(orderId, patientId, createTime));
+    }
 }

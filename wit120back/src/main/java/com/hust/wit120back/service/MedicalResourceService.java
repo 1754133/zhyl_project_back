@@ -19,4 +19,6 @@ public interface MedicalResourceService {
 
     String getCheckResult(Integer medResOrderId);
     boolean addCheckResult(Integer medResOrderId, String checkResult);
+
+    List<String> automaticAppointment(Integer orderId, Integer patientId, String createTime);
 }
