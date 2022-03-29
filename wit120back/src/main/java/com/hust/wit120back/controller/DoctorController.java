@@ -1,5 +1,6 @@
 package com.hust.wit120back.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.ConciseShiftInfoDTO;
@@ -112,7 +113,7 @@ public class DoctorController {
 
     @PostMapping("/caseHistory")
     public Result addCaseHistory(@RequestParam Integer orderId, @RequestParam String caseHistory){
-        if(orderId == null)
+        if(orderId == null || StrUtil.isBlank(caseHistory))
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(doctorService.addCaseHistory(orderId, caseHistory));
     }
@@ -126,7 +127,7 @@ public class DoctorController {
 
     @PutMapping("/caseHistory/update")
     public Result updateCaseHistory(@RequestParam Integer orderId, @RequestParam String caseHistory){
-        if(orderId == null)
+        if(orderId == null || StrUtil.isBlank(caseHistory))
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(doctorService.updateCaseHistory(orderId, caseHistory));
     }

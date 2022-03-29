@@ -59,6 +59,9 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(Constants.CODE_700, "手机号已被注册");
         }
         VerificationCode verificationCode = verificationCodeMapper.getCodeByPhone(userDTO.getPhone());
+        if (verificationCode == null){
+            throw new ServiceException(Constants.CODE_600, "未点击发送验证码按钮");
+        }
         if (!verificationCode.getCode().equals(userDTO.getCode())) {
             throw new ServiceException(Constants.CODE_700, "验证码错误");
         }
