@@ -196,12 +196,14 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
     public List<String> automaticAppointment(Integer orderId, Integer patientId, String createTime){
         //判断该日期是周几
         int today = TimeUtils.getWhatDay(createTime);
-        //System.out.println("Today is: " + today);
         //取得需要预约的医技资源名称
         String recommend = resourceRecommendMapper.selectRecommendByOrderId(orderId);
+        List<String> failList = new ArrayList<String>();
         String[] recommends = recommend.split("；");
+        /*
         for(String r : recommends)
             System.out.println("---" + r + "---");
+         */
         List<Integer> medResIds = new ArrayList<Integer>();
         //根据名称取得id
         for(int i = 0; i < recommends.length; i++)
@@ -213,9 +215,19 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
             for(int noon = 1; noon <= 2; noon++){
                 //半天内的预约名额
                 for(int j = 0; j < medResIds.size(); j++){
-                    System.out.println("day: " + i + ", the " + j + "th recommend: " + recommends[j]);
-                    //查找已经预约的数量
-                    Integer num = medicalResourceOrderMapper.selectOrderNumByMedResIdAndDate(medResIds.get(j), nxtDate, noon);
+                    //System.out.println("day: " + i + ", the " + j + "th recommend: " + recommends[j]);
+                    Integer medResId = medResIds.get(j);
+                    //是否已经预约
+                    Integer check = medicalResourceOrderMapper.selectMedResOrderId(orderId, medResId);
+                    if(check != null){
+                        //已经预约
+                        failList.add(medicalTechnicianMapper.selectTechnicianNameById(medResId));
+                        medResIds.remove(medResId);
+                        j--;
+                        continue;
+                    }
+                    //没有预约，查找已经预约的数量
+                    Integer num = medicalResourceOrderMapper.selectOrderNumByMedResIdAndDate(medResId, nxtDate, noon);
                     if(num == null) num = 0;
                     if(num >= 0 && num < 12){
                         //该半天内仍有名额，预约，需要的参数：orderId, patientId, day, noon, cost, medical_res_id
@@ -224,18 +236,17 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
                         medResOrderDTO.setPatientId(patientId);
                         medResOrderDTO.setDay(nxtDay);
                         medResOrderDTO.setNoon(noon);
-                        medResOrderDTO.setCost(medicalTechnicianMapper.selectCostByMedResId(medResIds.get(j)));
-                        medResOrderDTO.setMedResId(medResIds.get(j));
+                        medResOrderDTO.setCost(medicalTechnicianMapper.selectCostByMedResId(medResId));
+                        medResOrderDTO.setMedResId(medResId);
                         //预约
                         medicalResourceOrderMapper.addAppointment(medResOrderDTO);
                         //从数组中删掉该元素
-                        medResIds.remove(medResIds.get(j));
+                        medResIds.remove(medResId);
                         j--;
                     }
                 }
             }
         }
-        List<String> failList = new ArrayList<String>();
         for(Integer id : medResIds){
             failList.add(medicalTechnicianMapper.selectTechnicianNameById(id));
         }
