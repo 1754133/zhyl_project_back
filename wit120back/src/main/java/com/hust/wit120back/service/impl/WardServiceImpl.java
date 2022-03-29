@@ -104,9 +104,9 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    public Map<Integer, Integer> systemRecommendWard(){
+    public Map<String, Integer> systemRecommendWard(){
         int floor = 2; //楼层为2
-        Map<Integer, Integer> recommend = new HashMap<>();
+        Map<String, Integer> recommend = new HashMap<>();
         for(int i = 1; i <= floor; i++){
             for(int id = i * 100 + 1; id <= i * 100 + 20; id++){
                 int num = wardInfoMapper.selectWardNumByWardId(id);
@@ -114,7 +114,8 @@ public class WardServiceImpl implements WardService {
                     //有空床
                     for(int bed = 1; bed <= 4; bed++){
                         if(wardInfoMapper.selectBedByWardAndBedId(id, bed) == null){
-                            recommend.put(id, bed);
+                            recommend.put("wardId", id);
+                            recommend.put("bedId", bed);
                             return recommend;
                         }
                     }

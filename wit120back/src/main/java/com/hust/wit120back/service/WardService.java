@@ -15,5 +15,5 @@ public interface WardService {
     boolean addCheckRecord(Integer patientId, String checkRecord);
     String getCheckRecord(Integer patientId);
 
-    Map<Integer, Integer> systemRecommendWard();
+    Map<String, Integer> systemRecommendWard();
 }

@@ -199,7 +199,7 @@ public class MedicalResourceServiceImpl implements MedicalResourceService {
         //取得需要预约的医技资源名称
         String recommend = resourceRecommendMapper.selectRecommendByOrderId(orderId);
         List<String> failList = new ArrayList<String>();
-        String[] recommends = recommend.split("；");
+        String[] recommends = recommend.split(";");
         /*
         for(String r : recommends)
             System.out.println("---" + r + "---");
