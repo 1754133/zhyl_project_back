@@ -85,7 +85,7 @@ public class WardController {
      */
     @GetMapping("/systemRecommend")
     public Result systemRecommendWard(){
-        Map<Integer, Integer> recommend = wardService.systemRecommendWard();
+        Map<String, Integer> recommend = wardService.systemRecommendWard();
         if(recommend.isEmpty())
             return Result.error(Constants.CODE_600, "无剩余床位");
         return Result.success(recommend);
