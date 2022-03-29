@@ -7,6 +7,7 @@ import com.hust.wit120back.dto.ShiftInfoDTO;
 
 import com.hust.wit120back.entity.Department;
 
+import com.hust.wit120back.entity.DocInfo;
 import com.hust.wit120back.exception.ServiceException;
 import com.hust.wit120back.mapper.DepartmentMapper;
 import com.hust.wit120back.mapper.DocInfoMapper;
@@ -16,6 +17,7 @@ import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +168,59 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new ServiceException(Constants.CODE_600, "未查询到任何科室信息");
         }
         List<Department> departmentList = departmentMapper.selectDepartmentByPage(pageNum, pageSize);
+        List<Map<String, Object>> departmentShift = new ArrayList<>();
+        List<Integer> shiftDocIdList = doctorMapper.getDocIdList();
+        for (Department department : departmentList){
+            List<Integer> doctorIdList = departmentMapper.selectDoctorIdByDepartmentId(department.getDepartmentId());
+            int doctorNum = doctorIdList.size();
+            int noShiftNum = 0;
+            for (Integer doctorId : doctorIdList){
+                if (!shiftDocIdList.contains(doctorId)){
+                    noShiftNum = noShiftNum + 1;
+                }
+            }
+            Map<String, Object> res1 = new HashMap<>();
+            res1.put("departmentId", department.getDepartmentId());
+            res1.put("departmentName", department.getDepartmentName());
+            res1.put("doctorNum", doctorNum);
+            res1.put("noShiftNum", noShiftNum);
+            departmentShift.add(res1);
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("tableList", departmentShift);
+        res.put("total", total);
+        return res;
+    }
+
+    @Override
+    public List<DocInfo> getNoShiftDoctorByDepartmentId(Integer departmentId) {
+        //根据科室ID查询医生信息
+        List<DocInfo> docInfoList = docInfoMapper.selectDocInfoListByDepartment(departmentId);
+        if (docInfoList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "该科室不存在医生信息");
+        }
+        //查询坐班表中的所有医生ID
+        List<Integer> shiftDocIdList = doctorMapper.getDocIdList();
+        if (shiftDocIdList.size() != 0){
+            docInfoList.removeIf(docInfo -> shiftDocIdList.contains(docInfo.getDocId()));
+        }
+        if (docInfoList.size() == 0){
+            throw new ServiceException(Constants.CODE_600, "该科室不存在未安排坐诊的医生");
+        }
+        return docInfoList;
+    }
+
+    @Override
+    public Map<String, Object> getShiftNumByPageAndName(String departmentName, int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1){
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        pageNum = (pageNum - 1) * pageSize;
+        int total = departmentMapper.selectTotalByDepartmentName(departmentName);
+        if (total == 0){
+            throw new ServiceException(Constants.CODE_600, "未查询到任何科室信息");
+        }
+        List<Department> departmentList = departmentMapper.selectDepartmentByPageAndDepartmentName(departmentName, pageNum, pageSize);
         List<Map<String, Object>> departmentShift = new ArrayList<>();
         List<Integer> shiftDocIdList = doctorMapper.getDocIdList();
         for (Department department : departmentList){

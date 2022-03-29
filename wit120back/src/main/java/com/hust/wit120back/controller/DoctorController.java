@@ -1,5 +1,6 @@
 package com.hust.wit120back.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.hust.wit120back.common.Constants;
 import com.hust.wit120back.common.Result;
 import com.hust.wit120back.dto.ConciseShiftInfoDTO;
@@ -28,6 +29,35 @@ public class DoctorController {
             return Result.error(Constants.CODE_503, "无坐诊信息");
         }
         return Result.success(shiftInfos);
+    }
+
+    /**
+     * 新增排班信息
+     * @param conciseShiftInfoDTO
+     * @return
+     */
+    @PostMapping("/shiftInfo")
+    public Result addShiftInfo(@RequestBody ConciseShiftInfoDTO conciseShiftInfoDTO){
+        Integer doctorId = conciseShiftInfoDTO.getDoctorId();
+        if (doctorId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(doctorService.addShiftInfo(conciseShiftInfoDTO));
+    }
+
+    /**
+     * 删除坐诊信息
+     * @param doctorId
+     * @param day
+     * @param noon
+     * @return
+     */
+    @DeleteMapping("/shiftInfo/{doctorId}/{day}/{noon}")
+    public Result deleteShiftInfo(@PathVariable Integer doctorId, @PathVariable int day, @PathVariable int noon){
+        if (doctorId == null){
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(doctorService.deleteShiftInfo(doctorId, day, noon));
     }
 
     @GetMapping("/shiftInfo/{doctorId}")
@@ -83,7 +113,7 @@ public class DoctorController {
 
     @PostMapping("/caseHistory")
     public Result addCaseHistory(@RequestParam Integer orderId, @RequestParam String caseHistory){
-        if(orderId == null)
+        if(orderId == null || StrUtil.isBlank(caseHistory))
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(doctorService.addCaseHistory(orderId, caseHistory));
     }
@@ -97,7 +127,7 @@ public class DoctorController {
 
     @PutMapping("/caseHistory/update")
     public Result updateCaseHistory(@RequestParam Integer orderId, @RequestParam String caseHistory){
-        if(orderId == null)
+        if(orderId == null || StrUtil.isBlank(caseHistory))
             return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(doctorService.updateCaseHistory(orderId, caseHistory));
     }

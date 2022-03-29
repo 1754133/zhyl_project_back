@@ -18,4 +18,8 @@ public interface DoctorService {
     boolean addCaseHistory(Integer orderId, String prescription);
     String getCaseHistory(Integer orderId);
     int updateCaseHistory(Integer orderId, String caseHistory);
+
+    boolean addShiftInfo(ConciseShiftInfoDTO conciseShiftInfoDTO);
+
+    boolean deleteShiftInfo(Integer doctorId, int day, int noon);
 }

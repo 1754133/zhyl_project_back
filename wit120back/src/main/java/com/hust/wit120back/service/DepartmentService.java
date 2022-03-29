@@ -4,6 +4,7 @@ import com.hust.wit120back.dto.ConciseShiftInfoDTO;
 import com.hust.wit120back.dto.DepartmentDTO;
 import com.hust.wit120back.dto.ShiftInfoDTO;
 import com.hust.wit120back.entity.Department;
+import com.hust.wit120back.entity.DocInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,4 +30,8 @@ public interface DepartmentService {
     List<Map<String, Object>> getDocInfoByDepartment(Integer departmentId);
 
     Map<String, Object> getShiftNumByPage(int pageNum, int pageSize);
+
+    List<DocInfo> getNoShiftDoctorByDepartmentId(Integer departmentId);
+
+    Map<String, Object> getShiftNumByPageAndName(String departmentName, int pageNum, int pageSize);
 }

@@ -97,4 +97,10 @@ public interface DocInfoMapper {
     })
     List<Map<String, Object>> selectDocInfoByDepartmentId(Integer departmentId);
 
+    @Select("select doc_id, doc_name from doc_info where department_id=#{departmentId}")
+    @Results({
+            @Result(column = "doc_id", property = "docId"),
+            @Result(column = "doc_name", property = "docName"),
+    })
+    List<DocInfo> selectDocInfoListByDepartment(Integer departmentId);
 }
