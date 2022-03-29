@@ -33,9 +33,9 @@ public class OrderDTO implements Comparable<OrderDTO>{
             return year1 - year2;
         }else if(month1 != month2){
             return month1 - month2;
-        }else if(timeSlice1 != timeSlice2){
-            return timeSlice1 - timeSlice2;
+        }else if(day1 != day2){
+            return day1 - day2;
         }
-        return day1 - day2;
+        return timeSlice1 - timeSlice2;
     }
 }

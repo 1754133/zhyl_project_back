@@ -179,6 +179,7 @@ public class UserServiceImpl implements UserService {
             //设置预约日期
             String date = TimeUtils.getOrderDate(order.getCreateTime(), order.getOrderDay());
             order.setOrderTime(date);
+            System.out.println("date: " + date);
             //设置是否处理
             String caseHistory = caseHistoryMapper.selectCaseHisByOrderId(order.getOrderId());
             //处方
