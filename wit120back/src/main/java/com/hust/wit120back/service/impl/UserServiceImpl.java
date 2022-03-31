@@ -190,6 +190,7 @@ public class UserServiceImpl implements UserService {
         }
         //将orders按照预约单创建时间排序
         Collections.sort(orders);
+        Collections.reverse(orders);
         return orders;
     }
 
